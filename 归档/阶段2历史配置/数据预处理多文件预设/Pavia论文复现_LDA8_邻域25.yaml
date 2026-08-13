@@ -1,0 +1,29 @@
+# 论文划分 LDA8 邻域对照路线 / Paper-split LDA8 patch comparison route
+dataset:
+  name: pavia_university
+  split_protocol: paper30
+  split_seed: 345
+
+spectral_preprocessing:
+  standardization: standard
+  reducer: lda
+  pca:
+    n_components: 15
+    whiten: false
+  lda:
+    n_components: 8
+
+spatial_preprocessing:
+  representation: patch
+  patch_size: 25
+  padding_mode: constant
+  padding_value: 0.0
+
+output:
+  dtype: float32
+
+dataloader:
+  batch_size: 256
+  loader_seed: 42
+  num_workers: 0
+  pin_memory: true

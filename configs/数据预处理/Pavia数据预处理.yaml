@@ -1,0 +1,42 @@
+# Pavia University 唯一日常数据预处理入口
+# Unified daily preprocessing entry for Pavia University
+
+dataset:
+  name: pavia_university
+
+  # paper30：30% 训练、无验证集，用于论文兼容复现
+  # fair24_6_70：24% 训练、6% 验证、70% 测试，用于调参与公平比较
+  split_protocol: fair24_6_70
+  split_seed: 345
+
+spectral_preprocessing:
+  standardization: standard
+
+  # 可选：pca / lda / none
+  # 只修改此字段即可选择相应的方法专属参数块。
+  reducer: pca
+
+  pca:
+    n_components: 15
+    whiten: false
+
+  lda:
+    n_components: 8
+
+spatial_preprocessing:
+  # patch：供 HybridSN/CNN 使用；pixel：供 SVM/XGBoost/MLP 使用
+  representation: patch
+
+  # pixel 路线会忽略 patch_size；patch 路线必须使用正奇数。
+  patch_size: 25
+  padding_mode: constant
+  padding_value: 0.0
+
+output:
+  dtype: float32
+
+dataloader:
+  batch_size: 256
+  loader_seed: 42
+  num_workers: 0
+  pin_memory: true

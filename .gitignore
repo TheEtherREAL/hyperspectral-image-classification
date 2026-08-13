@@ -1,0 +1,89 @@
+# Python / IDE / operating system
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
+*.egg-info/
+build/
+dist/
+.idea/
+.vscode/
+.codex/
+.agents/
+*.code-workspace
+.DS_Store
+Thumbs.db
+~$*
+.env
+.env.*
+
+# Raw datasets are downloaded locally and must not be committed.
+data/raw/*
+!data/raw/README.md
+!data/raw/SOURCES.csv
+!data/raw/file_manifest.csv
+!data/raw/KAGGLE_ARCHIVE_README.md
+!data/raw/KAGGLE_ARCHIVE_CHECKSUMS.md
+
+# Processed data are ignored by default. Only the small, frozen Pavia
+# preprocessing states required for exact stage-2 reproduction are versioned.
+data/processed/**
+!data/processed/.gitkeep
+!data/processed/dataset_inventory.json
+!data/processed/pavia_university/
+!data/processed/pavia_university/fair24_6_70__seed345__standard_pca15_patch25/
+!data/processed/pavia_university/fair24_6_70__seed345__standard_pca15_patch25/metadata.json
+!data/processed/pavia_university/fair24_6_70__seed345__standard_pca15_patch25/preprocessing_state.npz
+!data/processed/pavia_university/paper30__seed345__standard_pca15_patch25/
+!data/processed/pavia_university/paper30__seed345__standard_pca15_patch25/metadata.json
+!data/processed/pavia_university/paper30__seed345__standard_pca15_patch25/preprocessing_state.npz
+!data/processed/pavia_university/fair24_6_70__seed345__standard_lda8_pixel/
+!data/processed/pavia_university/fair24_6_70__seed345__standard_lda8_pixel/metadata.json
+!data/processed/pavia_university/fair24_6_70__seed345__standard_lda8_pixel/preprocessing_state.npz
+!data/processed/pavia_university/fair24_6_70__seed345__standard_lda8_patch25/
+!data/processed/pavia_university/fair24_6_70__seed345__standard_lda8_patch25/metadata.json
+!data/processed/pavia_university/fair24_6_70__seed345__standard_lda8_patch25/preprocessing_state.npz
+!data/processed/pavia_university/paper30__seed345__standard_lda8_patch25/
+!data/processed/pavia_university/paper30__seed345__standard_lda8_patch25/metadata.json
+!data/processed/pavia_university/paper30__seed345__standard_lda8_patch25/preprocessing_state.npz
+
+# Fixed split NPZ/JSON/CSV files are deliberately versioned because all models
+# must use the same sample identities.
+
+# Runtime artifacts and formal experiment runs stay local.
+artifacts/**
+!artifacts/checkpoints/
+!artifacts/checkpoints/.gitkeep
+!artifacts/logs/
+!artifacts/logs/.gitkeep
+experiments/*
+!experiments/.gitkeep
+runs/
+*.log
+*.pt
+*.pth
+*.ckpt
+wandb/
+mlruns/
+
+# Result directories may grow quickly. Keep only the small audited dataset
+# overviews and class-count table in the public repository by default.
+results/**
+!results/dataset_overviews/
+!results/dataset_overviews/*.png
+!results/tables/
+!results/tables/dataset_class_counts.csv
+
+# Keep completed-stage material locally without crowding the public project.
+# The seven compact YAML presets remain public because tests use them to prove
+# that the unified configuration preserves every historical route.
+归档/阶段0到2历史工具/
+归档/阶段0到2历史文档/
+归档/__init__.py
+
+# Local Codex hand-off notes contain machine-specific paths and are not needed
+# by GitHub collaborators; TASK_BOARD and CONTRIBUTING are the public hand-off.
+docs/NEW_WINDOW_START.md

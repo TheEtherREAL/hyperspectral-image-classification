@@ -1,0 +1,42 @@
+﻿dataset,class_id,class_name,labeled_pixels
+pavia_university,1,Asphalt,6631
+pavia_university,2,Meadows,18649
+pavia_university,3,Gravel,2099
+pavia_university,4,Trees,3064
+pavia_university,5,Painted metal sheets,1345
+pavia_university,6,Bare Soil,5029
+pavia_university,7,Bitumen,1330
+pavia_university,8,Self-Blocking Bricks,3682
+pavia_university,9,Shadows,947
+indian_pines,1,Alfalfa,46
+indian_pines,2,Corn-notill,1428
+indian_pines,3,Corn-mintill,830
+indian_pines,4,Corn,237
+indian_pines,5,Grass-pasture,483
+indian_pines,6,Grass-trees,730
+indian_pines,7,Grass-pasture-mowed,28
+indian_pines,8,Hay-windrowed,478
+indian_pines,9,Oats,20
+indian_pines,10,Soybean-notill,972
+indian_pines,11,Soybean-mintill,2455
+indian_pines,12,Soybean-clean,593
+indian_pines,13,Wheat,205
+indian_pines,14,Woods,1265
+indian_pines,15,Buildings-Grass-Trees-Drives,386
+indian_pines,16,Stone-Steel-Towers,93
+salinas,1,Broccoli_green_weeds_1,2009
+salinas,2,Broccoli_green_weeds_2,3726
+salinas,3,Fallow,1976
+salinas,4,Fallow_rough_plow,1394
+salinas,5,Fallow_smooth,2678
+salinas,6,Stubble,3959
+salinas,7,Celery,3579
+salinas,8,Grapes_untrained,11271
+salinas,9,Soil_vinyard_develop,6203
+salinas,10,Corn_senesced_green_weeds,3278
+salinas,11,Lettuce_romaine_4wk,1068
+salinas,12,Lettuce_romaine_5wk,1927
+salinas,13,Lettuce_romaine_6wk,916
+salinas,14,Lettuce_romaine_7wk,1070
+salinas,15,Vinyard_untrained,7268
+salinas,16,Vinyard_vertical_trellis,1807

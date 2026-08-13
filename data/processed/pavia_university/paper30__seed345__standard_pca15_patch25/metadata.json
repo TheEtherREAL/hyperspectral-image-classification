@@ -1,0 +1,117 @@
+{
+  "schema_version": "1.0",
+  "config": {
+    "dataset_name": "pavia_university",
+    "split_protocol": "paper30",
+    "split_seed": 345,
+    "standardization": "standard",
+    "reducer": "pca",
+    "n_components": 15,
+    "whiten": false,
+    "representation": "patch",
+    "patch_size": 25,
+    "padding_mode": "constant",
+    "padding_value": 0.0,
+    "output_dtype": "float32"
+  },
+  "config_fingerprint": "e315fc0400298104dbc0c471db78f69509aa697c738dc5f3f72bc19f6156059c",
+  "dataset": {
+    "name": "pavia_university",
+    "cube_shape": [
+      610,
+      340,
+      103
+    ],
+    "label_shape": [
+      610,
+      340
+    ],
+    "class_names": [
+      "Asphalt",
+      "Meadows",
+      "Gravel",
+      "Trees",
+      "Painted metal sheets",
+      "Bare Soil",
+      "Bitumen",
+      "Self-Blocking Bricks",
+      "Shadows"
+    ],
+    "source_files": {
+      "PaviaU.mat": {
+        "sha256": "28447fa87f7a5797845e9a189c0da85e23b1d06a4ba7361e5ff44efbf834d2fb"
+      },
+      "PaviaU_gt.mat": {
+        "sha256": "23f6a426928f9b32984adffe659e29f554f9fb6c93b5a107528d308d5087a829"
+      }
+    }
+  },
+  "split": {
+    "protocol": "paper30",
+    "seed": 345,
+    "split_file": "pavia_university__paper30__seed345.npz",
+    "split_file_sha256": "fcb8d7dc7adfd27c4ffb281cae788c582e480565f15c41b04162758e28d24452",
+    "split_metadata_file": "pavia_university__paper30__seed345.json",
+    "sample_counts": {
+      "train": 12832,
+      "validation": 0,
+      "test": 29944
+    }
+  },
+  "fit_scope": {
+    "samples": "training center pixels only",
+    "training_samples": 12832,
+    "validation_and_test_used_for_fit": false
+  },
+  "standardization": {
+    "name": "standard",
+    "per_band": true,
+    "samples_seen": 12832
+  },
+  "spectral_reducer": {
+    "name": "pca",
+    "input_bands": 103,
+    "output_bands": 15,
+    "whiten": false,
+    "explained_variance_ratio": [
+      0.6300416605728177,
+      0.29390774149113774,
+      0.0639934118298527,
+      0.004110291623120458,
+      0.0030654964226960236,
+      0.0012403850494023152,
+      0.0011177825581982154,
+      0.0005629835279490861,
+      0.00032990156213539857,
+      0.00023687793633583114,
+      0.00020138677544576187,
+      0.0001569565904273262,
+      0.00011617492930456905,
+      8.627729876938399e-05,
+      7.592237120877045e-05
+    ],
+    "cumulative_explained_variance_ratio": 0.9992432505388015
+  },
+  "spatial_representation": {
+    "name": "patch",
+    "patch_size": 25,
+    "padding_mode": "constant",
+    "padding_value": 0.0,
+    "patches_materialized_on_disk": false
+  },
+  "label_contract": {
+    "stored_raw_labels": "1..C",
+    "model_labels": "0..C-1",
+    "background_label": 0
+  },
+  "software": {
+    "python": "3.12.13",
+    "numpy": "2.5.2",
+    "scikit_learn": "1.9.0",
+    "torch": "2.12.1+cu130"
+  },
+  "artifacts": {
+    "state": "preprocessing_state.npz",
+    "metadata": "metadata.json"
+  }
+}

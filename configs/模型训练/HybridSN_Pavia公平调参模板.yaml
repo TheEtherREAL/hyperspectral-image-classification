@@ -1,0 +1,58 @@
+# HybridSN 公平调参模板
+# 当前只准备配置接口，正式模型代码和训练尚未开始。
+
+experiment:
+  name: pavia_hybridsn_fair_tuning
+  seed: 42                   # 模型训练种子；数据划分 seed 不变
+  output_root: experiments
+
+dataset:
+  name: pavia_university
+  split_protocol: fair24_6_70
+  split_seed: 345            # 固定，不作为调参项
+
+spectral_preprocessing:
+  standardization: standard
+  reducer: pca  # 只改为 lda，即自动使用下面的 LDA8 参数
+  pca:
+    n_components: 15
+    whiten: false
+  lda:
+    n_components: 8
+
+spatial_preprocessing:
+  representation: patch
+  patch_size: 25
+  padding_mode: constant
+  padding_value: 0.0
+
+output:
+  dtype: float32
+
+dataloader:
+  batch_size: 256
+  loader_seed: 42
+  num_workers: 0
+  pin_memory: true
+
+model:
+  name: hybridsn
+  dropout: 0.4
+  num_classes: 9
+
+training:
+  optimizer: adam
+  learning_rate: 0.001
+  batch_size: 256
+  epochs: 100
+  weight_decay: 0.0
+  augmentation: false
+  batch_normalization: false
+  checkpoint_metric: validation_oa
+  early_stopping_patience: 15
+
+evaluation:
+  metrics: [oa, aa, kappa, per_class_accuracy]
+  save_confusion_matrix: true
+  save_loss_curve: true
+  save_classification_map: true

@@ -1,0 +1,58 @@
+# 阶段 3 计划配置：模型尚未正式实现或训练
+# Planned stage-3 config: the formal model has not been trained yet.
+experiment:
+  name: pavia_hybridsn_baseline
+  seed: 42
+  output_root: experiments
+
+dataset:
+  name: pavia_university
+  data_path: data/raw/PaviaU.mat
+  label_path: data/raw/PaviaU_gt.mat
+  background_label: 0
+  split_protocol: paper30
+  split_seed: 345
+  split_file: data/splits/pavia_university__paper30__seed345.npz
+
+spectral_preprocessing:
+  standardization: standard
+  reducer: pca  # 只改为 lda，即自动使用下面的 LDA8 参数
+  pca:
+    n_components: 15
+    whiten: false
+  lda:
+    n_components: 8
+
+spatial_preprocessing:
+  representation: patch
+  patch_size: 25
+  padding_mode: constant
+  padding_value: 0.0
+
+output:
+  dtype: float32
+
+model:
+  name: hybridsn
+  dropout: 0.4
+  num_classes: 9
+
+training:
+  optimizer: adam
+  learning_rate: 0.001
+  batch_size: 256
+  epochs: 100
+  weight_decay: 0.0
+  augmentation: false
+  batch_normalization: false
+  checkpoint_metric: fixed_final_epoch
+
+evaluation:
+  metrics:
+    - oa
+    - aa
+    - kappa
+    - per_class_accuracy
+  save_confusion_matrix: true
+  save_loss_curve: true
+  save_classification_map: true

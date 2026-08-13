@@ -1,0 +1,307 @@
+{
+  "dataset": {
+    "name": "pavia_university",
+    "cube_shape": [
+      610,
+      340,
+      103
+    ],
+    "label_shape": [
+      610,
+      340
+    ],
+    "data_key": "paviaU",
+    "label_key": "paviaU_gt",
+    "background_label": 0,
+    "class_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9
+    ],
+    "class_names": [
+      "Asphalt",
+      "Meadows",
+      "Gravel",
+      "Trees",
+      "Painted metal sheets",
+      "Bare Soil",
+      "Bitumen",
+      "Self-Blocking Bricks",
+      "Shadows"
+    ],
+    "labeled_pixels": 42776,
+    "source_files": {
+      "PaviaU.mat": {
+        "bytes": 34806917,
+        "md5": "165a3c7488995f54a19add47c7eed4cd",
+        "expected_md5": "165a3c7488995f54a19add47c7eed4cd",
+        "md5_matches_archive": true,
+        "sha256": "28447fa87f7a5797845e9a189c0da85e23b1d06a4ba7361e5ff44efbf834d2fb",
+        "mat_variables": [
+          "paviaU"
+        ]
+      },
+      "PaviaU_gt.mat": {
+        "bytes": 11005,
+        "md5": "b8c3ba44b077c26e24220463aa855bd3",
+        "expected_md5": "b8c3ba44b077c26e24220463aa855bd3",
+        "md5_matches_archive": true,
+        "sha256": "23f6a426928f9b32984adffe659e29f554f9fb6c93b5a107528d308d5087a829",
+        "mat_variables": [
+          "paviaU_gt"
+        ]
+      }
+    }
+  },
+  "sample_representation": {
+    "coordinates": "zero-based (row, column) in the original label map",
+    "labels": "original dataset class IDs 1..9; background 0 is excluded",
+    "split_ids": {
+      "0": "train",
+      "1": "validation",
+      "2": "test"
+    },
+    "indices": "positions into the aligned coordinates and labels arrays"
+  },
+  "partition_algorithm": {
+    "implementation": "sklearn.model_selection.train_test_split",
+    "shuffle": true,
+    "stratify": "original class label",
+    "steps": [
+      {
+        "name": "shared paper train / test split",
+        "train_size": 0.3,
+        "test_size": 0.7,
+        "random_state": 345
+      },
+      {
+        "name": "fair train / validation split within the 30% pool",
+        "train_size": 0.8,
+        "test_size": 0.2,
+        "random_state": 345
+      }
+    ],
+    "relationship": "Both protocols share the same test indices; fair train plus validation equals the paper30 training pool.",
+    "rounding": "Actual integer counts are authoritative and recorded in statistics."
+  },
+  "software": {
+    "python": "3.12.13",
+    "numpy": "2.5.2",
+    "scikit_learn": "1.9.0"
+  },
+  "schema_version": "1.0",
+  "dataset_name": "pavia_university",
+  "protocol": {
+    "name": "fair24_6_70",
+    "purpose": "24% train / 6% validation / 70% test fair model comparison",
+    "seed": 345,
+    "target_fractions": {
+      "train": 0.24,
+      "validation": 0.06,
+      "test": 0.7
+    }
+  },
+  "artifacts": {
+    "npz": "pavia_university__fair24_6_70__seed345.npz",
+    "metadata": "pavia_university__fair24_6_70__seed345.json",
+    "statistics": "pavia_university__fair24_6_70__seed345__stats.csv"
+  },
+  "statistics": {
+    "overall": {
+      "train": {
+        "samples": 10265,
+        "target_fraction": 0.24,
+        "actual_fraction": 0.23997101178230784
+      },
+      "validation": {
+        "samples": 2567,
+        "target_fraction": 0.06,
+        "actual_fraction": 0.06001028614176174
+      },
+      "test": {
+        "samples": 29944,
+        "target_fraction": 0.7,
+        "actual_fraction": 0.7000187020759304
+      }
+    },
+    "by_class": [
+      {
+        "class_id": 1,
+        "class_name": "Asphalt",
+        "total": 6631,
+        "splits": {
+          "train": {
+            "samples": 1591,
+            "actual_fraction": 0.23993364500075404
+          },
+          "validation": {
+            "samples": 398,
+            "actual_fraction": 0.06002111295430553
+          },
+          "test": {
+            "samples": 4642,
+            "actual_fraction": 0.7000452420449405
+          }
+        }
+      },
+      {
+        "class_id": 2,
+        "class_name": "Meadows",
+        "total": 18649,
+        "splits": {
+          "train": {
+            "samples": 4475,
+            "actual_fraction": 0.23995924714461903
+          },
+          "validation": {
+            "samples": 1119,
+            "actual_fraction": 0.060003217330687975
+          },
+          "test": {
+            "samples": 13055,
+            "actual_fraction": 0.700037535524693
+          }
+        }
+      },
+      {
+        "class_id": 3,
+        "class_name": "Gravel",
+        "total": 2099,
+        "splits": {
+          "train": {
+            "samples": 504,
+            "actual_fraction": 0.2401143401619819
+          },
+          "validation": {
+            "samples": 126,
+            "actual_fraction": 0.06002858504049548
+          },
+          "test": {
+            "samples": 1469,
+            "actual_fraction": 0.6998570747975227
+          }
+        }
+      },
+      {
+        "class_id": 4,
+        "class_name": "Trees",
+        "total": 3064,
+        "splits": {
+          "train": {
+            "samples": 735,
+            "actual_fraction": 0.23988250652741513
+          },
+          "validation": {
+            "samples": 184,
+            "actual_fraction": 0.06005221932114883
+          },
+          "test": {
+            "samples": 2145,
+            "actual_fraction": 0.700065274151436
+          }
+        }
+      },
+      {
+        "class_id": 5,
+        "class_name": "Painted metal sheets",
+        "total": 1345,
+        "splits": {
+          "train": {
+            "samples": 323,
+            "actual_fraction": 0.24014869888475837
+          },
+          "validation": {
+            "samples": 80,
+            "actual_fraction": 0.05947955390334572
+          },
+          "test": {
+            "samples": 942,
+            "actual_fraction": 0.7003717472118959
+          }
+        }
+      },
+      {
+        "class_id": 6,
+        "class_name": "Bare Soil",
+        "total": 5029,
+        "splits": {
+          "train": {
+            "samples": 1207,
+            "actual_fraction": 0.2400079538675681
+          },
+          "validation": {
+            "samples": 302,
+            "actual_fraction": 0.060051700139192685
+          },
+          "test": {
+            "samples": 3520,
+            "actual_fraction": 0.6999403459932392
+          }
+        }
+      },
+      {
+        "class_id": 7,
+        "class_name": "Bitumen",
+        "total": 1330,
+        "splits": {
+          "train": {
+            "samples": 319,
+            "actual_fraction": 0.23984962406015037
+          },
+          "validation": {
+            "samples": 80,
+            "actual_fraction": 0.06015037593984962
+          },
+          "test": {
+            "samples": 931,
+            "actual_fraction": 0.7
+          }
+        }
+      },
+      {
+        "class_id": 8,
+        "class_name": "Self-Blocking Bricks",
+        "total": 3682,
+        "splits": {
+          "train": {
+            "samples": 884,
+            "actual_fraction": 0.2400869092884302
+          },
+          "validation": {
+            "samples": 221,
+            "actual_fraction": 0.06002172732210755
+          },
+          "test": {
+            "samples": 2577,
+            "actual_fraction": 0.6998913633894622
+          }
+        }
+      },
+      {
+        "class_id": 9,
+        "class_name": "Shadows",
+        "total": 947,
+        "splits": {
+          "train": {
+            "samples": 227,
+            "actual_fraction": 0.23970432946145723
+          },
+          "validation": {
+            "samples": 57,
+            "actual_fraction": 0.06019007391763464
+          },
+          "test": {
+            "samples": 663,
+            "actual_fraction": 0.7001055966209081
+          }
+        }
+      }
+    ]
+  }
+}

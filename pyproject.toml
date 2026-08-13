@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=78,<82"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hsi-course-project"
+version = "0.1.0"
+description = "Reproducible hyperspectral image classification coursework"
+requires-python = ">=3.12"
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --basetemp=artifacts/pytest_tmp"

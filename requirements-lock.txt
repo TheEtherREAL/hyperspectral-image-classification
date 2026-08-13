@@ -1,0 +1,15 @@
+# 2026-08-13 已验收的直接依赖版本
+# PyTorch 使用官方 CUDA 13.0 wheel 源单独安装：
+# python -m pip install torch==2.12.1 --index-url https://download.pytorch.org/whl/cu130
+torch==2.12.1+cu130
+numpy==2.5.2
+scipy==1.18.0
+scikit-learn==1.9.0
+matplotlib==3.11.1
+seaborn==0.13.2
+pandas==2.3.3
+PyYAML==6.0.3
+tqdm==4.70.0
+tensorboard==2.21.0
+pytest==8.4.2
+

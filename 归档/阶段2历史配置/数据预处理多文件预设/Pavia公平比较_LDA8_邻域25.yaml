@@ -1,0 +1,29 @@
+# 公平比较 LDA8 邻域路线 / Fair-comparison LDA8 patch route
+dataset:
+  name: pavia_university
+  split_protocol: fair24_6_70
+  split_seed: 345
+
+spectral_preprocessing:
+  standardization: standard
+  reducer: lda
+  pca:
+    n_components: 15
+    whiten: false
+  lda:
+    n_components: 8
+
+spatial_preprocessing:
+  representation: patch
+  patch_size: 25
+  padding_mode: constant
+  padding_value: 0.0
+
+output:
+  dtype: float32
+
+dataloader:
+  batch_size: 256
+  loader_seed: 42
+  num_workers: 0
+  pin_memory: true

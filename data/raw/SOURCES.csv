@@ -1,0 +1,8 @@
+dataset,file_name,source_url,download_date,sha256,notes
+Pavia University,PaviaU.mat,Kaggle archive supplied by user,2026-08-13,28447fa87f7a5797845e9a189c0da85e23b1d06a4ba7361e5ff44efbf834d2fb,Archive README attributes original distribution to UPV/EHU
+Pavia University,PaviaU_gt.mat,Kaggle archive supplied by user,2026-08-13,23f6a426928f9b32984adffe659e29f554f9fb6c93b5a107528d308d5087a829,Archive README attributes original distribution to UPV/EHU
+Indian Pines,Indian_pines_corrected.mat,Kaggle archive supplied by user,2026-08-13,ec2f8808710919d566f70f0d4aa885aae1ddfd42b734aba71c5e12ca65450939,Corrected 200-band cube
+Indian Pines,Indian_pines_gt.mat,Kaggle archive supplied by user,2026-08-13,65c4687a8ab04f6da4789799bc3bc4f6e88bccac3ed6a2e6ae367e5e6b9e429c,
+Salinas,Salinas_corrected.mat,Kaggle archive supplied by user,2026-08-13,5ec1c0d22f56d18ecd336f8e35735863c0f160682e04e0c18ef3f89a3334d87d,Corrected 204-band cube; supplemental unless course route is changed
+Salinas,Salinas_gt.mat,Kaggle archive supplied by user,2026-08-13,ecfab4d31ef5553f097943235d8ea502038eb4a2067b2ad10b33e37c949955e2,
+Houston 2013,,,,,Still missing; confirm official/course-provided version

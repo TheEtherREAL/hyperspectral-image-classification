@@ -1,0 +1,23 @@
+# 传统分类器 103 波段对照路线 / 103-band pixel baseline
+dataset:
+  name: pavia_university
+  split_protocol: fair24_6_70
+  split_seed: 345
+
+spectral_preprocessing:
+  standardization: standard
+  reducer: none
+  pca:
+    n_components: 15
+    whiten: false
+  lda:
+    n_components: 8
+
+spatial_preprocessing:
+  representation: pixel
+  patch_size: 1
+  padding_mode: constant
+  padding_value: 0.0
+
+output:
+  dtype: float32

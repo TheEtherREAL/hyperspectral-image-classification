@@ -1,0 +1,127 @@
+{
+  "datasets": {
+    "pavia_university": {
+      "cube_shape": [
+        610,
+        340,
+        103
+      ],
+      "cube_dtype": "uint16",
+      "cube_min": 0.0,
+      "cube_max": 8000.0,
+      "label_shape": [
+        610,
+        340
+      ],
+      "label_dtype": "uint8",
+      "class_count": 9,
+      "labeled_pixels": 42776,
+      "background_pixels": 164624,
+      "overview": "results\\dataset_overviews\\pavia_university_overview.png",
+      "files": {
+        "PaviaU.mat": {
+          "bytes": 34806917,
+          "md5": "165a3c7488995f54a19add47c7eed4cd",
+          "expected_md5": "165a3c7488995f54a19add47c7eed4cd",
+          "md5_matches_archive": true,
+          "sha256": "28447fa87f7a5797845e9a189c0da85e23b1d06a4ba7361e5ff44efbf834d2fb",
+          "mat_variables": [
+            "paviaU"
+          ]
+        },
+        "PaviaU_gt.mat": {
+          "bytes": 11005,
+          "md5": "b8c3ba44b077c26e24220463aa855bd3",
+          "expected_md5": "b8c3ba44b077c26e24220463aa855bd3",
+          "md5_matches_archive": true,
+          "sha256": "23f6a426928f9b32984adffe659e29f554f9fb6c93b5a107528d308d5087a829",
+          "mat_variables": [
+            "paviaU_gt"
+          ]
+        }
+      }
+    },
+    "indian_pines": {
+      "cube_shape": [
+        145,
+        145,
+        200
+      ],
+      "cube_dtype": "uint16",
+      "cube_min": 955.0,
+      "cube_max": 9604.0,
+      "label_shape": [
+        145,
+        145
+      ],
+      "label_dtype": "uint8",
+      "class_count": 16,
+      "labeled_pixels": 10249,
+      "background_pixels": 10776,
+      "overview": "results\\dataset_overviews\\indian_pines_overview.png",
+      "files": {
+        "Indian_pines_corrected.mat": {
+          "bytes": 5953527,
+          "md5": "66dbc9f4a9b7c9b1445f60a87b505101",
+          "expected_md5": "66dbc9f4a9b7c9b1445f60a87b505101",
+          "md5_matches_archive": true,
+          "sha256": "ec2f8808710919d566f70f0d4aa885aae1ddfd42b734aba71c5e12ca65450939",
+          "mat_variables": [
+            "indian_pines_corrected"
+          ]
+        },
+        "Indian_pines_gt.mat": {
+          "bytes": 1125,
+          "md5": "9414943dac1d80faaa9165c8b460510c",
+          "expected_md5": "9414943dac1d80faaa9165c8b460510c",
+          "md5_matches_archive": true,
+          "sha256": "65c4687a8ab04f6da4789799bc3bc4f6e88bccac3ed6a2e6ae367e5e6b9e429c",
+          "mat_variables": [
+            "indian_pines_gt"
+          ]
+        }
+      }
+    },
+    "salinas": {
+      "cube_shape": [
+        512,
+        217,
+        204
+      ],
+      "cube_dtype": "int16",
+      "cube_min": -11.0,
+      "cube_max": 9207.0,
+      "label_shape": [
+        512,
+        217
+      ],
+      "label_dtype": "uint8",
+      "class_count": 16,
+      "labeled_pixels": 54129,
+      "background_pixels": 56975,
+      "overview": "results\\dataset_overviews\\salinas_overview.png",
+      "files": {
+        "Salinas_corrected.mat": {
+          "bytes": 26552770,
+          "md5": "485d8802f4a6b4ebc0767d48dd0da06b",
+          "expected_md5": "485d8802f4a6b4ebc0767d48dd0da06b",
+          "md5_matches_archive": true,
+          "sha256": "5ec1c0d22f56d18ecd336f8e35735863c0f160682e04e0c18ef3f89a3334d87d",
+          "mat_variables": [
+            "salinas_corrected"
+          ]
+        },
+        "Salinas_gt.mat": {
+          "bytes": 4277,
+          "md5": "7b8da653a61bb0271b27b37fb926390f",
+          "expected_md5": "7b8da653a61bb0271b27b37fb926390f",
+          "md5_matches_archive": true,
+          "sha256": "ecfab4d31ef5553f097943235d8ea502038eb4a2067b2ad10b33e37c949955e2",
+          "mat_variables": [
+            "salinas_gt"
+          ]
+        }
+      }
+    }
+  }
+}
