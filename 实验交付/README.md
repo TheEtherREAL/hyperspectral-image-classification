@@ -2,6 +2,8 @@
 
 本目录是高光谱图像分类大作业的**整理后的核心交付目录**，包含三个自包含 Jupyter Notebook（数据预处理、HybridSN 基线、传统分类方法对比）、对应的 YAML 配置、运行产物目录与实验报告。
 
+> 实验报告（`report/实验报告.md`）按教师 Word 模板标题组织，覆盖**基本任务**（数据读取与预处理、PCA/LDA 降维、HybridSN 分类）与**进阶任务**（改进 HybridSN：BatchNorm + 残差连接 + 全局平均池化，以及与原始模型的控制变量对比）。改进模型定义见主仓库 `src/models/改进HybridSN.py`，对比脚本为 `scripts/运行HybridSN改进对比.py`。
+
 ## 目录结构
 
 ```

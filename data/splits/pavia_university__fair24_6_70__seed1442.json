@@ -1,7 +1,16 @@
 {
-  "dataset": "pavia_university",
-  "protocol": "fair24_6_70",
-  "seed": 1442,
+  "schema_version": "1.0",
+  "dataset_name": "pavia_university",
+  "protocol": {
+    "name": "fair24_6_70",
+    "purpose": "fair train/validation/test split",
+    "seed": 1442,
+    "target_fractions": {
+      "train": 0.24,
+      "validation": 0.06,
+      "test": 0.7
+    }
+  },
   "class_names": [
     "Asphalt",
     "Meadows",

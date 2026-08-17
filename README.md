@@ -4,12 +4,12 @@
 
 ### Reproducible Hyperspectral Image Classification Pipeline
 
-面向课程复现、模型比较与后续研究的可配置 PyTorch 高光谱分类基线
+可复现、可审计、可扩展的 PyTorch 高光谱图像分类工程，覆盖 HybridSN 基线、模型改进与多种传统方法对比。
 
 ![Python](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-2.12.1%20%7C%20CUDA%2013.0-EE4C2C?logo=pytorch&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-70%20passed-2EA44F?logo=pytest&logoColor=white)
-![Stage](https://img.shields.io/badge/stage-HybridSN%20baseline%20complete-5B5BD6)
+![Stage](https://img.shields.io/badge/stage-improved%20HybridSN%20complete-5B5BD6)
 
 [快速开始](#-快速开始) · [配置调参](#️-配置调参) · [项目结构](#-项目结构) · [文档导航](#-文档导航)
 
@@ -21,10 +21,10 @@
 
 ## 项目简介
 
-本项目以 Pavia University 为首个闭环数据集，建立可复现、可审计、可扩展的高光谱图像分类工程。当前已经在共享数据基座上完成 Pavia University 版 HybridSN 结构复现和首个 `paper30` 正式 baseline，并将数据产物生成、模型结构学习与一键训练/推理流程分离；改进、多随机种子和多模型比较仍按阶段推进。
+本项目以 Pavia University 为首个闭环数据集，建立可复现、可审计、可扩展的高光谱图像分类工程。工程在统一的数据基座上完成 HybridSN 结构复现、`paper30` 论文兼容基线、`fair24_6_70` 光谱预处理与研究架构分组对比，并完成 **HybridSN 模型改进（BatchNorm + 残差连接 + 全局平均池化）** 及与原始模型的严格控制变量对比。
 
 > [!IMPORTANT]
-> 统一 seed=1442 的正式 baseline 已完成：OA=99.9532%、AA=99.8790%、Kappa=0.999380。该结果来自随机像元 `paper30` 划分；空间审计显示 100% 测试 patch 含训练中心像元且 100% 含同类训练中心像元，因此它只作为课程/论文兼容口径基线，不能解释为严格跨区域泛化能力。
+> 统一 seed=1442 的正式基线：原始 HybridSN 在随机像元 `fair24_6_70` 划分上取得 **OA=99.9532%、AA=99.9405%、Kappa=0.999381**（4,844,793 参数，14 误分）。改进 HybridSN（BN+残差+GAP）以 **约 97% 的参数削减（4,844,793 → 152,073）** 换取 OA=99.7328%、AA=99.3404%、Kappa=0.996459。空间审计显示测试 patch 与训练中心像元高度重叠，因此这些数字是课程/论文兼容口径的精度，不能直接解释为严格跨区域泛化能力。
 
 ## ✨ 当前成果
 
@@ -36,10 +36,11 @@
 | 光谱处理 | ✅ | 训练集专用标准化、PCA15、监督式 LDA8、原始 103 波段路线 |
 | 空间表示 | ✅ | `pixel` 与动态 `patch25`，边界填充和身份字段完整 |
 | PyTorch 接口 | ✅ | Dataset/DataLoader、可复现 shuffle、模型就绪数据产物与两阶段 Notebook |
-| 自动验收 | ✅ | 81 项全仓测试通过，PCA/LDA 状态、LBP/Gabor 特征与训练/评估接口一致 |
+| 自动验收 | ✅ | 全仓测试通过，PCA/LDA 状态、LBP/Gabor 特征与训练/评估接口一致 |
 | HybridSN 结构 | ✅ | 原论文 3D→2D 架构、`N×1×15×25×25 → N×9`、4,844,793 个参数、前后向通过 |
-| HybridSN 正式实验 | ✅ | seed=1442、100 epochs、OA/AA/Kappa、性能、checkpoint 与四类结果图齐全 |
+| HybridSN 正式实验 | ✅ | seed=1442、OA/AA/Kappa、性能、checkpoint 与四类结果图齐全 |
 | 架构分组对比 | ✅ | PCA/LDA/选带、LBP/Gabor、SVM/HistGB 与 HybridSN 共 10 种方法，分类图和性能分析齐全 |
+| 改进 HybridSN | ✅ | BatchNorm + 残差连接 + 全局平均池化，152,073 参数（−96.9%），与原始模型控制变量对比 |
 
 ## 🧩 数据处理管线
 
@@ -69,8 +70,8 @@ flowchart LR
 ### 1. 克隆并创建环境
 
 ```powershell
-git clone <你的仓库地址>
-cd <仓库目录>
+git clone https://github.com/TheEtherREAL/hyperspectral-image-classification.git
+cd hyperspectral-image-classification
 
 py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install --upgrade pip
@@ -138,7 +139,22 @@ HybridSN 的唯一模型定义位于 [HybridSN模型.py](src/models/HybridSN模�
 .\.venv\Scripts\python.exe scripts\运行研究架构分组对比.py
 ```
 
-该实验按控制变量方式比较 PCA15/LDA8/均匀选带、LBP/Gabor/融合、RBF-SVM/HistGradientBoosting，并合并相同 `fair24_6_70 + seed1442` 的 HybridSN 结果。PCA15+LBP+Gabor+SVM 的 Test OA=99.9365%，PCA15 HybridSN 为 99.9532%。正式结果见 [研究架构分组对比实验.ipynb](notebooks/研究架构分组对比实验.ipynb)，报告草稿见 [研究架构分组对比实验报告草稿.md](docs/solution_report/研究架构分组对比实验报告草稿.md)。当前 C1 是 HistGradientBoosting，不得写成真正的 XGBoost。
+该实验按控制变量方式比较 PCA15/LDA8/均匀选带、LBP/Gabor/融合、RBF-SVM/HistGradientBoosting，并合并相同 `fair24_6_70 + seed1442` 的 HybridSN 结果。PCA15+LBP+Gabor+SVM 的 Test OA=99.9365%，PCA15 HybridSN 为 99.9532%。正式结果见 [研究架构分组对比实验.ipynb](notebooks/研究架构分组对比实验.ipynb)，报告草稿见 [研究架构分组对比实验报告草稿.md](docs/solution_report/研究架构分组对比实验报告草稿.md)。
+
+### 8. 运行改进 HybridSN 对比
+
+```powershell
+.\.venv\Scripts\python.exe scripts\运行HybridSN改进对比.py
+```
+
+改进模型定义在 [改进HybridSN.py](src/models/改进HybridSN.py)，在原始 HybridSN 基础上做三处改动：每个卷积后加 **BatchNorm**、每个 3D/2D 卷积块加 **残差连接**（通道变化时用投影短接对齐维度）、用 **全局平均池化（GAP）** 替换 `Flatten(18496)→256→128` 的全连接分类头。3D/2D 卷积的通道与卷积核与原始完全一致，从而把比较限定在这三处改动上。脚本在 `fair24_6_70 + seed1442 + PCA15` 上以与基线完全相同的训练协议训练改进模型，并与原始 HybridSN 做控制变量对比，输出整体指标、逐类精度与参数量对比图。
+
+| 模型 | 参数量 | OA | AA | Kappa |
+|---|--:|--:|--:|--:|
+| 原始 HybridSN | 4,844,793 | 99.9532% | 99.9405% | 0.999381 |
+| 改进 HybridSN | 152,073（−96.9%） | 99.7328% | 99.3404% | 0.996459 |
+
+改进模型以约 97% 的参数削减换取 0.22pp OA 下降，误差集中在少数类 Trees 与 Shadows（GAP 头丢失细粒度空间纹理）。改进的价值在于模型体积/内存压缩（18.48 MiB → 0.58 MiB）与抗过拟合，预期在更难的多类别数据集上相对优势更明显。
 
 ## ⚙️ 配置调参
 
@@ -166,20 +182,21 @@ spatial_preprocessing:
 - 修改 batch size、loader seed 或 worker 不需要新建统计预处理状态；
 - 切换 split、reducer、分量数或空间表示时，必须使用对应的独立冻结状态。
 
-参数含义与状态生成边界见 [配置调参说明](configs/数据预处理/配置调参说明.md)。
+改进模型的结构开关（`batch_normalization` / `residual_connections` / `dense_units`）在 [configs/模型训练/HybridSN_Pavia改进对比.yaml](configs/模型训练/HybridSN_Pavia改进对比.yaml) 中配置。参数含义与状态生成边界见 [配置调参说明](configs/数据预处理/配置调参说明.md)。
 
 ## 📁 项目结构
 
 ```text
-├─ configs/       唯一数据 YAML 与 HybridSN 论文复现配置
+├─ configs/       唯一数据 YAML 与 HybridSN 论文复现/改进对比配置
 ├─ data/          数据说明、固定 split 和小型冻结预处理状态
-├─ src/           数据、模型、训练、评价与可视化模块
+├─ src/           数据、模型（原始 + 改进）、训练、评价与可视化模块
 ├─ scripts/       环境检查、配置检查、只读主流程与受控维护入口
 ├─ tests/         数据管线、配置及 HybridSN 结构/前后向测试
 ├─ notebooks/     数据产物 Notebook 与 HybridSN 训练/验证 Notebook
 ├─ docs/          实施报告、论文草稿、协议、任务看板和开发接口
 ├─ results/       已审核的数据概览图与统计表
 ├─ experiments/   后续正式实验配置副本（运行内容默认不提交）
+├─ 实验交付/       三个自包含交付 Notebook、配置与实验报告（含改进对比）
 └─ 归档/           仅保留公开复现需要的历史配置预设
 ```
 
@@ -193,8 +210,9 @@ spatial_preprocessing:
 - [x] HybridSN 模型定义、逐层 shape、参数量与前后向测试
 - [x] `paper30` 论文兼容 HybridSN 单种子正式基线
 - [x] `fair24_6_70 + seed1442` 光谱预处理与研究架构分组对比
+- [x] HybridSN 改进模块（BatchNorm + 残差 + GAP）与控制变量对比
 - [ ] `fair24_6_70` 多随机种子公平调参与空间块划分对照
-- [ ] HybridSN 改进模块与消融实验
+- [ ] 改进模型在其他数据集（Indian Pines / Salinas）上的验证
 - [ ] 其他模型和多数据集比较
 - [ ] 论文结果、答辩图表与最终工程包
 
@@ -208,6 +226,7 @@ spatial_preprocessing:
 | [实验协议](docs/EXPERIMENT_PROTOCOL.md) | 数据泄漏、调参、测试集与报告红线 |
 | [任务看板](docs/TASK_BOARD.md) | 当前完成度与下一步任务 |
 | [实施报告](docs/solution_report/高光谱智能解译大作业实施报告.md) | 工程过程、验收证据和课程对应关系 |
+| [实验报告（Markdown）](实验交付/report/实验报告.md) | 按教师 Word 模板标题组织的完整报告，含基本任务与改进 HybridSN 对比 |
 | [HybridSN 基线报告草稿](docs/solution_report/HybridSN基线阶段实验报告草稿.md) | 按教师 Word 模板标题组织的阶段结果、图表与误差分析 |
 | [研究架构分组对比报告草稿](docs/solution_report/研究架构分组对比实验报告草稿.md) | 10 种方法的控制变量结果、任务解释、性能分析和改进方向 |
 | [研究论文草稿](docs/paper/高光谱图像分类研究论文.md) | 当前方法章节与后续结果占位 |
@@ -221,6 +240,6 @@ spatial_preprocessing:
 
 <div align="center">
 
-**当前里程碑：HybridSN 单种子正式 baseline 闭环已完成；下一步进入公平调参、空间划分对照与模型改进。**
+**当前里程碑：HybridSN 基线、光谱预处理对比、研究架构分组对比与改进 HybridSN（BN+残差+GAP）均已闭环；下一步进入多随机种子公平调参、空间划分对照与多数据集验证。**
 
 </div>

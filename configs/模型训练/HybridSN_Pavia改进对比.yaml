@@ -1,0 +1,48 @@
+# 改进 HybridSN 对比：BatchNorm + 残差连接 + 全局平均池化（更小参数量）。
+# 训练协议与「HybridSN_Pavia预处理对比.yaml」完全一致（Adam/lr=1e-3/batch=256/30 epoch/seed1442），
+# 仅把模型从原始 HybridSN 换成改进结构，从而隔离网络结构改动这一单一变量。
+experiment:
+  name: pavia_hybridsn_improvement_comparison
+  seed: 1442
+  output_root: experiments
+
+dataset:
+  name: pavia_university
+  split_protocol: fair24_6_70
+  split_seed: 1442
+
+preprocessing:
+  variant: standard_pca15
+  output_bands: 15
+
+spatial_preprocessing:
+  representation: patch
+  patch_size: 25
+  padding_mode: constant
+  padding_value: 0.0
+
+model:
+  name: improved_hybridsn
+  num_classes: 9
+  dropout: 0.4
+  conv3d_channels: [8, 16, 32]
+  spectral_kernel_sizes: [7, 5, 3]
+  spatial_kernel_size: 3
+  conv2d_channels: 64
+  dense_units: []          # 全局平均池化后不设全连接瓶颈，直接 Linear(64, 9)
+  batch_normalization: true
+  residual_connections: true
+
+training:
+  optimizer: adam
+  learning_rate: 0.001
+  batch_size: 256
+  epochs: 30
+  weight_decay: 0.0
+  checkpoint_metric: validation_oa
+
+evaluation:
+  metrics: [oa, aa, kappa, per_class_accuracy]
+  benchmark_warmup: 5
+  benchmark_iterations: 20
+  save_all_labeled_map: true
