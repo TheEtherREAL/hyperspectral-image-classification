@@ -61,7 +61,7 @@ def find_project_root(start: Path) -> Path:
     for candidate in (start.resolve(), *start.resolve().parents):
         if (candidate / 'pyproject.toml').is_file():
             return candidate
-    raise FileNotFoundError('Cannot locate hsi_project/pyproject.toml')
+    raise FileNotFoundError('Cannot locate 实验交付/pyproject.toml')
 
 PROJECT_ROOT = find_project_root(Path.cwd())
 PREFERRED_RUN = (

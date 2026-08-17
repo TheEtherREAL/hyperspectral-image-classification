@@ -6,7 +6,7 @@
 
 | 任务 | 状态 | 验收产出 |
 |---|---|---|
-| 建立固定工作区 | 已完成 | `hsi_project/` |
+| 建立固定工作区 | 已完成 | `实验交付/` |
 | 固定实验协议 | 已完成 | `EXPERIMENT_PROTOCOL.md` |
 | 建立独立 Python 环境 | 已完成 | `.venv`，Python 3.12.13 |
 | 安装 GPU PyTorch | 已完成 | PyTorch 2.12.1 + CUDA 13.0 |

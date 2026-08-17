@@ -192,11 +192,11 @@ spatial_preprocessing:
 ├─ src/           数据、模型（原始 + 改进）、训练、评价与可视化模块
 ├─ scripts/       环境检查、配置检查、只读主流程与受控维护入口
 ├─ tests/         数据管线、配置及 HybridSN 结构/前后向测试
-├─ notebooks/     数据产物 Notebook 与 HybridSN 训练/验证 Notebook
+├─ notebooks/     交付 Notebook（01/02/03）与数据产物/结构学习 Notebook
 ├─ docs/          实施报告、论文草稿、协议、任务看板和开发接口
 ├─ results/       已审核的数据概览图与统计表
 ├─ experiments/   后续正式实验配置副本（运行内容默认不提交）
-├─ 实验交付/       三个自包含交付 Notebook、配置与实验报告（含改进对比）
+├─ report/        实验报告（Markdown）与报告插图（含改进 HybridSN 对比）
 └─ 归档/           仅保留公开复现需要的历史配置预设
 ```
 
@@ -226,7 +226,7 @@ spatial_preprocessing:
 | [实验协议](docs/EXPERIMENT_PROTOCOL.md) | 数据泄漏、调参、测试集与报告红线 |
 | [任务看板](docs/TASK_BOARD.md) | 当前完成度与下一步任务 |
 | [实施报告](docs/solution_report/高光谱智能解译大作业实施报告.md) | 工程过程、验收证据和课程对应关系 |
-| [实验报告（Markdown）](实验交付/report/实验报告.md) | 按教师 Word 模板标题组织的完整报告，含基本任务与改进 HybridSN 对比 |
+| [实验报告（Markdown）](report/实验报告.md) | 按教师 Word 模板标题组织的完整报告，含基本任务与改进 HybridSN 对比 |
 | [HybridSN 基线报告草稿](docs/solution_report/HybridSN基线阶段实验报告草稿.md) | 按教师 Word 模板标题组织的阶段结果、图表与误差分析 |
 | [研究架构分组对比报告草稿](docs/solution_report/研究架构分组对比实验报告草稿.md) | 10 种方法的控制变量结果、任务解释、性能分析和改进方向 |
 | [研究论文草稿](docs/paper/高光谱图像分类研究论文.md) | 当前方法章节与后续结果占位 |
