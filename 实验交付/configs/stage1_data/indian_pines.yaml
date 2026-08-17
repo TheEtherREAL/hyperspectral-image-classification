@@ -1,0 +1,48 @@
+# ============================================================
+# 第一阶段 · 数据预处理配置（Indian Pines）
+# 说明：Indian Pines 图像尺寸 145×145、200 波段、16 类、标记像元 10249。
+# ============================================================
+
+experiment:
+  name: indian_pines_stage1
+  seed: 1442
+
+dataset:
+  name: indian_pines
+  split_protocol: fair24_6_70
+  split_seed: 1442
+
+selected_route: pca15
+
+routes:
+  raw_all_bands:                # 原始 200 波段（仅标准化）
+    standardization: standard
+    reducer: none
+  pca15:
+    standardization: standard
+    reducer: pca
+    n_components: 15
+    whiten: false
+  lda15:                        # Indian Pines 16 类 → LDA 上限 15 维
+    standardization: standard
+    reducer: lda
+    n_components: 15
+  uniform15:
+    standardization: standard
+    reducer: band_selection
+    method: uniform
+    n_components: 15
+  fisher15:
+    standardization: standard
+    reducer: band_selection
+    method: fisher
+    n_components: 15
+
+spatial_preprocessing:
+  representation: patch
+  patch_size: 25
+  padding_mode: constant
+  padding_value: 0.0
+
+output:
+  dtype: float32

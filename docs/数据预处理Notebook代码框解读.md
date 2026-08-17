@@ -46,21 +46,21 @@ CUDA 可用：True
 ### 关键输出
 
 ```text
-fair24_6_70__seed345__standard_pca15_patch25
+fair24_6_70__seed1442__standard_pca15_patch25
 standard + pca15 + patch25
 batch_size=256
-loader_seed=42
+loader_seed=1442
 ```
 
 ### 含义
 
 - `fair24_6_70`：24% 训练、6% 验证、70% 测试；
-- `seed345`：数据划分固定随机种子；
+- `seed1442`：数据划分固定随机种子；
 - `standard`：逐波段标准化；
 - `pca15`：103 个原始波段降到 15 个主成分；
 - `patch25`：每个中心像元提取 25×25 空间邻域；
 - `batch_size=256`：DataLoader 每批最多返回 256 个样本；
-- `loader_seed=42`：训练样本打乱顺序可复现。
+- `loader_seed=1442`：训练样本打乱顺序可复现。
 
 `WorkflowSettings(...)` 的长输出只是所有参数的完整对象表示，不是实验结果。冻结状态目录存在只说明参数文件可以被定位，还没有证明其内容正确；该检查由代码框 7 完成。
 
@@ -262,7 +262,7 @@ model_label=0
 
 ```text
 batch_size=256
-loader_seed=42
+loader_seed=1442
 num_workers=0
 pin_memory=True
 train：41 batches
@@ -272,7 +272,7 @@ test：117 batches
 
 批次数是向上取整：例如 10,265÷256 得到 40 个完整批次加 1 个较小批次，所以是 41。`drop_last=False` 保证最后一个不满 256 的批次不会丢失。
 
-训练集使用 seed=42 可复现打乱；验证和测试保持固定顺序。`num_workers=0` 在当前 Windows/Jupyter 环境最稳定；`pin_memory=True` 有利于后续把 CPU batch 搬到 GPU，但这一框本身没有进行 GPU 训练。
+训练集使用 seed=1442 可复现打乱；验证和测试保持固定顺序。`num_workers=0` 在当前 Windows/Jupyter 环境最稳定；`pin_memory=True` 有利于后续把 CPU batch 搬到 GPU，但这一框本身没有进行 GPU 训练。
 
 ## 代码框 15：检查正式模型将接收的 batch
 
@@ -307,7 +307,7 @@ sample_index：(256,)
 合计：256
 ```
 
-该批次基本反映全训练集的不均衡：草地很多，阴影极少。由于 DataLoader 只是随机打乱而没有采用平衡采样，每个 batch 不会保证各类相同；seed=42 固定后，第一次运行可复现这一首批构成。
+该批次基本反映全训练集的不均衡：草地很多，阴影极少。由于 DataLoader 只是随机打乱而没有采用平衡采样，每个 batch 不会保证各类相同；seed=1442 固定后，第一次运行可复现这一首批构成。
 
 单个 batch 不能代表整个训练集，也不是 24%/6%/70% 的 split 比例。它提示后续可将类别权重、平衡采样或 focal loss列为候选方案，但是否采用必须通过 `fair24_6_70` 验证集实验决定。
 

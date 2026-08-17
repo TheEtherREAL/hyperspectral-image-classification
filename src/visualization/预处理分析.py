@@ -274,7 +274,7 @@ def plot_training_pca_scatter(
     *,
     class_names_zh: Sequence[str] | None = None,
     max_samples_per_class: int = 500,
-    seed: int = 345,
+    seed: int = 1442,
 ) -> tuple[Figure, Axes]:
     """绘制训练集 PCA1/PCA2 散点 / Plot train-only PCA1/PCA2 scatter."""
 
@@ -322,7 +322,7 @@ def plot_training_reducer_scatter(
     *,
     class_names_zh: Sequence[str] | None = None,
     max_samples_per_class: int = 500,
-    seed: int = 345,
+    seed: int = 1442,
 ) -> tuple[Figure, Axes]:
     """绘制训练集 PCA/LDA 前两分量 / Plot first two train-only components."""
 

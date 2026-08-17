@@ -1,0 +1,48 @@
+# ============================================================
+# 第二阶段 · HybridSN 训练配置（Softmax 基线，Pavia University）
+# 说明：notebook 02 读取本文件定义模型结构、分类目标与训练超参数。
+# ============================================================
+
+experiment:
+  name: pavia_hybridsn_softmax_baseline
+  seed: 1442
+
+# 阶段一产物（由 notebook 01 生成），notebook 02 据此加载模型就绪数据
+stage1_manifest: outputs/stage1/pavia_university/stage1_manifest.json
+
+dataset:
+  name: pavia_university
+  split_protocol: fair24_6_70
+  split_seed: 1442
+
+dataloader:
+  batch_size: 256             # 批大小（显存不足时可调小，如 64/128）
+  loader_seed: 1442           # DataLoader 采样种子
+  num_workers: 0              # 数据加载线程数（Windows 下建议 0）
+  pin_memory: true
+
+model:
+  name: hybridsn
+  dropout: 0.4                # 全连接层 Dropout 概率
+  architecture:               # —— 模型结构超参数（可调整以做多组实验）——
+    conv3d_channels: [8, 16, 32]        # 三层 3D 卷积的输出通道数
+    spectral_kernel_sizes: [7, 5, 3]    # 三层 3D 卷积的光谱维卷积核大小
+    spatial_kernel_size: 3              # 3D/2D 卷积的空间维卷积核大小（奇数）
+    conv2d_channels: 64                 # 2D 卷积输出通道数
+    dense_units: [256, 128]             # 全连接层隐藏单元数
+    batch_normalization: false          # 是否在卷积后加 BatchNorm
+
+classification:
+  objective: softmax          # 分类目标：softmax（多类互斥）
+  loss: cross_entropy
+
+training:
+  optimizer: adam             # 优化器
+  learning_rate: 0.001        # 学习率
+  weight_decay: 0.0           # 权重衰减（L2 正则）
+  epochs: 30                  # 训练轮数
+  early_stopping_patience: 12 # 早停耐心：验证集指标连续多少轮无提升则停止
+  early_stopping_min_delta: 0.0
+
+runtime:
+  device: auto                # auto：自动选择 GPU/CPU；也可写 cuda / cpu

@@ -1,8 +1,8 @@
-# 阶段 3 计划配置：模型尚未正式实现或训练
-# Planned stage-3 config: the formal model has not been trained yet.
+# 统一随机种子配置：数据划分、模型初始化、训练与 DataLoader 均使用 1442
+# Unified seed config: split, initialization, training and DataLoader all use 1442.
 experiment:
   name: pavia_hybridsn_baseline
-  seed: 42
+  seed: 1442
   output_root: experiments
 
 dataset:
@@ -11,8 +11,8 @@ dataset:
   label_path: data/raw/PaviaU_gt.mat
   background_label: 0
   split_protocol: paper30
-  split_seed: 345
-  split_file: data/splits/pavia_university__paper30__seed345.npz
+  split_seed: 1442
+  split_file: data/splits/pavia_university__paper30__seed1442.npz
 
 spectral_preprocessing:
   standardization: standard
@@ -43,6 +43,7 @@ training:
   batch_size: 256
   epochs: 100
   weight_decay: 0.0
+  checkpoint_every: 10
   augmentation: false
   batch_normalization: false
   checkpoint_metric: fixed_final_epoch
@@ -56,3 +57,6 @@ evaluation:
   save_confusion_matrix: true
   save_loss_curve: true
   save_classification_map: true
+  save_per_class_accuracy: true
+  measure_training_time: true
+  measure_inference_time: true

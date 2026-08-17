@@ -1,0 +1,36 @@
+experiment:
+  name: pavia_hybridsn_sigmoid_ablation
+  seed: 1442
+stage1_manifest: coursework/outputs/stage1/pavia_university/stage1_manifest.json
+dataset:
+  name: pavia_university
+  split_protocol: fair24_6_70
+  split_seed: 1442
+dataloader:
+  batch_size: 256
+  loader_seed: 1442
+  num_workers: 0
+  pin_memory: true
+model:
+  name: hybridsn
+  dropout: 0.4
+  architecture:
+    conv3d_channels: [8, 16, 32]
+    spectral_kernel_sizes: [7, 5, 3]
+    spatial_kernel_size: 3
+    conv2d_channels: 64
+    dense_units: [256, 128]
+    batch_normalization: false
+classification:
+  objective: sigmoid
+  loss: binary_cross_entropy_with_logits_one_hot
+training:
+  optimizer: adam
+  learning_rate: 0.001
+  weight_decay: 0.0
+  epochs: 30
+  early_stopping_patience: 12
+  early_stopping_min_delta: 0.0
+runtime:
+  device: auto
+

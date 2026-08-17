@@ -1,0 +1,36 @@
+# ============================================================
+# 第二阶段 · HybridSN 轻量化结构实验（Softmax，Pavia University）
+# 说明：在基线基础上减小通道/全连接规模并加入 BatchNorm，用于结构消融。
+# ============================================================
+
+experiment:
+  name: pavia_hybridsn_softmax_lightweight
+  seed: 1442
+
+stage1_manifest: outputs/stage1/pavia_university/stage1_manifest.json
+
+dataset: {name: pavia_university, split_protocol: fair24_6_70, split_seed: 1442}
+dataloader: {batch_size: 256, loader_seed: 1442, num_workers: 0, pin_memory: true}
+
+model:
+  name: hybridsn
+  dropout: 0.35               # 轻量化结构可稍降 Dropout
+  architecture:
+    conv3d_channels: [8, 12, 16]     # 收窄 3D 通道
+    spectral_kernel_sizes: [7, 5, 3]
+    spatial_kernel_size: 3
+    conv2d_channels: 32              # 收窄 2D 通道
+    dense_units: [128, 64]           # 收窄全连接层
+    batch_normalization: true        # 加入 BatchNorm 稳定训练
+
+classification: {objective: softmax, loss: cross_entropy}
+
+training:
+  optimizer: adam
+  learning_rate: 0.001
+  weight_decay: 0.0001       # 轻量化结构加入少量 L2 正则
+  epochs: 30
+  early_stopping_patience: 12
+  early_stopping_min_delta: 0.0
+
+runtime: {device: auto}

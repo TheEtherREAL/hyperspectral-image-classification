@@ -1,0 +1,31 @@
+﻿protocol,seed,split,class_id,class_name,samples,class_total,target_fraction,actual_fraction_of_class
+paper30,1442,train,ALL,All labeled pixels,12832,42776,0.3,0.2999812979240696
+paper30,1442,train,1,Asphalt,1989,6631,0.3,0.29995475795505955
+paper30,1442,train,2,Meadows,5594,18649,0.3,0.299962464475307
+paper30,1442,train,3,Gravel,630,2099,0.3,0.3001429252024774
+paper30,1442,train,4,Trees,919,3064,0.3,0.29993472584856395
+paper30,1442,train,5,Painted metal sheets,403,1345,0.3,0.29962825278810407
+paper30,1442,train,6,Bare Soil,1509,5029,0.3,0.30005965400676077
+paper30,1442,train,7,Bitumen,399,1330,0.3,0.3
+paper30,1442,train,8,Self-Blocking Bricks,1105,3682,0.3,0.30010863661053777
+paper30,1442,train,9,Shadows,284,947,0.3,0.29989440337909185
+paper30,1442,validation,ALL,All labeled pixels,0,42776,0.0,0.0
+paper30,1442,validation,1,Asphalt,0,6631,0.0,0.0
+paper30,1442,validation,2,Meadows,0,18649,0.0,0.0
+paper30,1442,validation,3,Gravel,0,2099,0.0,0.0
+paper30,1442,validation,4,Trees,0,3064,0.0,0.0
+paper30,1442,validation,5,Painted metal sheets,0,1345,0.0,0.0
+paper30,1442,validation,6,Bare Soil,0,5029,0.0,0.0
+paper30,1442,validation,7,Bitumen,0,1330,0.0,0.0
+paper30,1442,validation,8,Self-Blocking Bricks,0,3682,0.0,0.0
+paper30,1442,validation,9,Shadows,0,947,0.0,0.0
+paper30,1442,test,ALL,All labeled pixels,29944,42776,0.7,0.7000187020759304
+paper30,1442,test,1,Asphalt,4642,6631,0.7,0.7000452420449405
+paper30,1442,test,2,Meadows,13055,18649,0.7,0.700037535524693
+paper30,1442,test,3,Gravel,1469,2099,0.7,0.6998570747975227
+paper30,1442,test,4,Trees,2145,3064,0.7,0.700065274151436
+paper30,1442,test,5,Painted metal sheets,942,1345,0.7,0.7003717472118959
+paper30,1442,test,6,Bare Soil,3520,5029,0.7,0.6999403459932392
+paper30,1442,test,7,Bitumen,931,1330,0.7,0.7
+paper30,1442,test,8,Self-Blocking Bricks,2577,3682,0.7,0.6998913633894622
+paper30,1442,test,9,Shadows,663,947,0.7,0.7001055966209081

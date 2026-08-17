@@ -83,7 +83,7 @@ def labeled_pixels(
 def create_fixed_protocol_splits(
     label_map: np.ndarray,
     *,
-    seed: int = 345,
+    seed: int = 1442,
     background_label: int = 0,
 ) -> dict[str, PixelSplit]:
     """Create the paper-compatible and fair-comparison Pavia protocols.

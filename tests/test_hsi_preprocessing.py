@@ -9,6 +9,7 @@ import torch
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 
 from src.datasets.高光谱预处理 import (
+    BandSelectionReducer,
     HSIDataBundle,
     HSIPreprocessingPipeline,
     HSITensorDataset,
@@ -37,10 +38,10 @@ def make_bundle(tmp_path: Path, cube: np.ndarray | None = None) -> HSIDataBundle
     split_dir.mkdir(parents=True, exist_ok=True)
     (raw_dir / "PaviaU.mat").write_bytes(b"synthetic cube")
     (raw_dir / "PaviaU_gt.mat").write_bytes(b"synthetic labels")
-    split_path = split_dir / "pavia_university__fair24_6_70__seed345.npz"
+    split_path = split_dir / "pavia_university__fair24_6_70__seed1442.npz"
     split_path.write_bytes(b"synthetic fixed split")
     split_metadata_path = split_path.with_suffix(".json")
-    split_metadata = {"protocol": {"name": "fair24_6_70", "seed": 345}}
+    split_metadata = {"protocol": {"name": "fair24_6_70", "seed": 1442}}
     split_metadata_path.write_text(json.dumps(split_metadata), encoding="utf-8")
 
     return HSIDataBundle(
@@ -60,7 +61,7 @@ def config(**overrides) -> PreprocessingConfig:
     values = {
         "dataset_name": "pavia_university",
         "split_protocol": "fair24_6_70",
-        "split_seed": 345,
+        "split_seed": 1442,
         "standardization": "standard",
         "reducer": "pca",
         "n_components": 3,
@@ -180,7 +181,7 @@ def test_torch_loader_shapes_labels_and_order_are_reproducible(tmp_path: Path) -
 
 def test_paper_protocol_returns_no_validation_loader(tmp_path: Path) -> None:
     data = make_bundle(tmp_path)
-    paper_metadata = {"protocol": {"name": "paper30", "seed": 345}}
+    paper_metadata = {"protocol": {"name": "paper30", "seed": 1442}}
     paper_data = HSIDataBundle(
         spec=data.spec,
         cube=data.cube,
@@ -289,7 +290,7 @@ def test_one_line_yaml_reducer_switch_selects_method_specific_parameters() -> No
         "dataset": {
             "name": "pavia_university",
             "split_protocol": "fair24_6_70",
-            "split_seed": 345,
+            "split_seed": 1442,
         },
         "spectral_preprocessing": {
             "standardization": "standard",
@@ -315,10 +316,34 @@ def test_lda_rejects_more_than_classes_minus_one_components() -> None:
         config(reducer="lda", n_components=9).validate()
 
 
-@pytest.mark.parametrize("reducer", ["band_selection"])
-def test_planned_reducers_fail_explicitly_instead_of_silently(reducer: str) -> None:
-    with pytest.raises(NotImplementedError, match="later comparison route"):
-        config(reducer=reducer).validate()
+@pytest.mark.parametrize("method", ["uniform", "fisher"])
+def test_band_selection_routes_are_fitted_and_round_trip(
+    tmp_path: Path,
+    method: str,
+) -> None:
+    data = make_bundle(tmp_path / method)
+    fitted = HSIPreprocessingPipeline(
+        config(
+            reducer="band_selection",
+            n_components=3,
+            band_selection_method=method,
+        )
+    ).fit(data)
+
+    assert isinstance(fitted.reducer, BandSelectionReducer)
+    assert fitted.reducer.method == method
+    assert fitted.reducer.n_samples_seen_ == data.train_indices.size
+    assert fitted.reducer.selected_indices_.shape == (3,)
+    assert np.all(np.diff(fitted.reducer.selected_indices_) > 0)
+    assert fitted.transformed_cube_.shape == (*data.cube.shape[:2], 3)
+
+    paths = fitted.save_state(tmp_path / f"state_{method}")
+    loaded = HSIPreprocessingPipeline.load_state(paths["state"], paths["metadata"])
+    loaded.attach_transformed_cube(data.cube)
+    np.testing.assert_array_equal(
+        loaded.reducer.selected_indices_, fitted.reducer.selected_indices_
+    )
+    np.testing.assert_allclose(loaded.transformed_cube_, fitted.transformed_cube_)
 
 
 @pytest.mark.parametrize("representation", ["lbp", "gabor"])

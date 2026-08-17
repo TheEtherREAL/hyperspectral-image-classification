@@ -22,7 +22,7 @@ def label_map() -> np.ndarray:
 
 
 def test_partitions_are_disjoint_and_cover_all_labeled_pixels(label_map: np.ndarray) -> None:
-    splits = create_fixed_protocol_splits(label_map, seed=345)
+    splits = create_fixed_protocol_splits(label_map, seed=1442)
     labeled_count = int(np.count_nonzero(label_map))
 
     for split in splits.values():
@@ -37,15 +37,15 @@ def test_partitions_are_disjoint_and_cover_all_labeled_pixels(label_map: np.ndar
 
 def test_every_nonempty_partition_contains_every_class(label_map: np.ndarray) -> None:
     expected_classes = {1, 2, 3, 4}
-    for split in create_fixed_protocol_splits(label_map, seed=345).values():
+    for split in create_fixed_protocol_splits(label_map, seed=1442).values():
         for indices in split.indices_by_split().values():
             if indices.size:
                 assert set(np.unique(split.labels[indices]).tolist()) == expected_classes
 
 
 def test_same_seed_reproduces_every_assignment(label_map: np.ndarray) -> None:
-    first = create_fixed_protocol_splits(label_map, seed=345)
-    second = create_fixed_protocol_splits(label_map, seed=345)
+    first = create_fixed_protocol_splits(label_map, seed=1442)
+    second = create_fixed_protocol_splits(label_map, seed=1442)
 
     for protocol_name in first:
         np.testing.assert_array_equal(first[protocol_name].coordinates, second[protocol_name].coordinates)
@@ -53,19 +53,19 @@ def test_same_seed_reproduces_every_assignment(label_map: np.ndarray) -> None:
         np.testing.assert_array_equal(first[protocol_name].split_ids(), second[protocol_name].split_ids())
 
 
-def test_default_seed_is_the_frozen_seed_345(label_map: np.ndarray) -> None:
+def test_default_seed_is_the_frozen_seed_1442(label_map: np.ndarray) -> None:
     default = create_fixed_protocol_splits(label_map)
-    explicit = create_fixed_protocol_splits(label_map, seed=345)
+    explicit = create_fixed_protocol_splits(label_map, seed=1442)
 
     for protocol_name in default:
-        assert default[protocol_name].protocol.seed == 345
+        assert default[protocol_name].protocol.seed == 1442
         np.testing.assert_array_equal(
             default[protocol_name].split_ids(), explicit[protocol_name].split_ids()
         )
 
 
 def test_protocols_share_test_set_and_training_pool(label_map: np.ndarray) -> None:
-    splits = create_fixed_protocol_splits(label_map, seed=345)
+    splits = create_fixed_protocol_splits(label_map, seed=1442)
     paper = splits["paper30"]
     fair = splits["fair24_6_70"]
 
@@ -77,7 +77,7 @@ def test_protocols_share_test_set_and_training_pool(label_map: np.ndarray) -> No
 
 
 def test_coordinates_and_original_labels_remain_aligned(label_map: np.ndarray) -> None:
-    split = create_fixed_protocol_splits(label_map, seed=345)["fair24_6_70"]
+    split = create_fixed_protocol_splits(label_map, seed=1442)["fair24_6_70"]
     rows, columns = split.coordinates.T
 
     assert split.coordinates.dtype == np.int32
@@ -87,7 +87,7 @@ def test_coordinates_and_original_labels_remain_aligned(label_map: np.ndarray) -
 
 
 def test_validator_rejects_overlapping_incomplete_partitions(label_map: np.ndarray) -> None:
-    fair = create_fixed_protocol_splits(label_map, seed=345)["fair24_6_70"]
+    fair = create_fixed_protocol_splits(label_map, seed=1442)["fair24_6_70"]
     invalid = replace(fair, validation_indices=fair.train_indices)
 
     with pytest.raises(ValueError, match="disjoint and cover"):
@@ -98,7 +98,7 @@ def test_artifacts_save_assignments_statistics_and_metadata(
     label_map: np.ndarray,
     tmp_path,
 ) -> None:
-    split = create_fixed_protocol_splits(label_map, seed=345)["fair24_6_70"]
+    split = create_fixed_protocol_splits(label_map, seed=1442)["fair24_6_70"]
     paths = write_split_artifacts(
         split,
         output_dir=tmp_path,
@@ -134,7 +134,7 @@ def test_artifacts_save_assignments_statistics_and_metadata(
 
     metadata = json.loads(paths["metadata"].read_text(encoding="utf-8"))
     assert metadata["schema_version"] == "1.0"
-    assert metadata["protocol"]["seed"] == 345
+    assert metadata["protocol"]["seed"] == 1442
     assert metadata["statistics"]["overall"]["train"]["samples"] == 96
 
     statistics_lines = paths["statistics"].read_text(encoding="utf-8-sig").splitlines()

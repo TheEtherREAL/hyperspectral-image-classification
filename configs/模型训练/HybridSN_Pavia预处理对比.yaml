@@ -1,0 +1,46 @@
+# HybridSN 光谱预处理公平对比：只改变模型前的光谱表示
+experiment:
+  name: pavia_hybridsn_spectral_preprocessing_comparison
+  seed: 1442
+  output_root: experiments
+
+dataset:
+  name: pavia_university
+  split_protocol: fair24_6_70
+  split_seed: 1442
+
+comparison:
+  variants:
+    - standard_pca15
+    - raw_pca15
+    - standard_pca15_whiten
+    - standard_uniform15
+    - standard_fisher15
+  output_bands: 15
+
+spatial_preprocessing:
+  representation: patch
+  patch_size: 25
+  padding_mode: constant
+  padding_value: 0.0
+
+model:
+  name: hybridsn
+  dropout: 0.4
+  num_classes: 9
+
+training:
+  optimizer: adam
+  learning_rate: 0.001
+  batch_size: 256
+  epochs: 30
+  weight_decay: 0.0
+  checkpoint_metric: validation_oa
+  augmentation: false
+  batch_normalization: false
+
+evaluation:
+  metrics: [oa, aa, kappa, per_class_accuracy]
+  benchmark_warmup: 5
+  benchmark_iterations: 20
+  save_all_labeled_map: true

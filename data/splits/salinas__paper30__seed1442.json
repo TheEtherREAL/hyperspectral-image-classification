@@ -1,0 +1,450 @@
+{
+  "dataset": {
+    "name": "salinas",
+    "cube_shape": [
+      512,
+      217,
+      204
+    ],
+    "label_shape": [
+      512,
+      217
+    ],
+    "data_key": "salinas_corrected",
+    "label_key": "salinas_gt",
+    "background_label": 0,
+    "class_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "class_names": [
+      "Broccoli_green_weeds_1",
+      "Broccoli_green_weeds_2",
+      "Fallow",
+      "Fallow_rough_plow",
+      "Fallow_smooth",
+      "Stubble",
+      "Celery",
+      "Grapes_untrained",
+      "Soil_vinyard_develop",
+      "Corn_senesced_green_weeds",
+      "Lettuce_romaine_4wk",
+      "Lettuce_romaine_5wk",
+      "Lettuce_romaine_6wk",
+      "Lettuce_romaine_7wk",
+      "Vinyard_untrained",
+      "Vinyard_vertical_trellis"
+    ],
+    "labeled_pixels": 54129,
+    "source_files": {
+      "Salinas_corrected.mat": {
+        "bytes": 26552770,
+        "md5": "485d8802f4a6b4ebc0767d48dd0da06b",
+        "sha256": "5ec1c0d22f56d18ecd336f8e35735863c0f160682e04e0c18ef3f89a3334d87d",
+        "mat_variables": [
+          "salinas_corrected"
+        ]
+      },
+      "Salinas_gt.mat": {
+        "bytes": 4277,
+        "md5": "7b8da653a61bb0271b27b37fb926390f",
+        "sha256": "ecfab4d31ef5553f097943235d8ea502038eb4a2067b2ad10b33e37c949955e2",
+        "mat_variables": [
+          "salinas_gt"
+        ]
+      }
+    }
+  },
+  "sample_representation": {
+    "coordinates": "zero-based (row, column) in the original label map",
+    "labels": "original dataset class IDs 1..C; background 0 is excluded",
+    "split_ids": {
+      "0": "train",
+      "1": "validation",
+      "2": "test"
+    },
+    "indices": "positions into the aligned coordinates and labels arrays"
+  },
+  "partition_algorithm": {
+    "implementation": "sklearn.model_selection.train_test_split",
+    "shuffle": true,
+    "stratify": "original class label",
+    "steps": [
+      {
+        "name": "shared paper train / test split",
+        "train_size": 0.3,
+        "test_size": 0.7,
+        "random_state": 1442
+      },
+      {
+        "name": "fair train / validation split within the 30% pool",
+        "train_size": 0.8,
+        "test_size": 0.2,
+        "random_state": 1442
+      }
+    ],
+    "relationship": "Both protocols share the same test indices; fair train plus validation equals the paper30 training pool.",
+    "rounding": "Actual integer counts are authoritative and recorded in statistics."
+  },
+  "software": {
+    "python": "3.12.13",
+    "numpy": "2.5.2",
+    "scikit_learn": "1.9.0"
+  },
+  "schema_version": "1.0",
+  "dataset_name": "salinas",
+  "protocol": {
+    "name": "paper30",
+    "purpose": "HybridSN paper-compatible 30% train / 70% test reproduction",
+    "seed": 1442,
+    "target_fractions": {
+      "train": 0.3,
+      "validation": 0.0,
+      "test": 0.7
+    }
+  },
+  "artifacts": {
+    "npz": "salinas__paper30__seed1442.npz",
+    "metadata": "salinas__paper30__seed1442.json",
+    "statistics": "salinas__paper30__seed1442__stats.csv"
+  },
+  "statistics": {
+    "overall": {
+      "train": {
+        "samples": 16238,
+        "target_fraction": 0.3,
+        "actual_fraction": 0.2999870679303146
+      },
+      "validation": {
+        "samples": 0,
+        "target_fraction": 0.0,
+        "actual_fraction": 0.0
+      },
+      "test": {
+        "samples": 37891,
+        "target_fraction": 0.7,
+        "actual_fraction": 0.7000129320696854
+      }
+    },
+    "by_class": [
+      {
+        "class_id": 1,
+        "class_name": "Broccoli_green_weeds_1",
+        "total": 2009,
+        "splits": {
+          "train": {
+            "samples": 603,
+            "actual_fraction": 0.3001493280238925
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 1406,
+            "actual_fraction": 0.6998506719761075
+          }
+        }
+      },
+      {
+        "class_id": 2,
+        "class_name": "Broccoli_green_weeds_2",
+        "total": 3726,
+        "splits": {
+          "train": {
+            "samples": 1118,
+            "actual_fraction": 0.30005367686527107
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 2608,
+            "actual_fraction": 0.6999463231347289
+          }
+        }
+      },
+      {
+        "class_id": 3,
+        "class_name": "Fallow",
+        "total": 1976,
+        "splits": {
+          "train": {
+            "samples": 593,
+            "actual_fraction": 0.3001012145748988
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 1383,
+            "actual_fraction": 0.6998987854251012
+          }
+        }
+      },
+      {
+        "class_id": 4,
+        "class_name": "Fallow_rough_plow",
+        "total": 1394,
+        "splits": {
+          "train": {
+            "samples": 418,
+            "actual_fraction": 0.2998565279770445
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 976,
+            "actual_fraction": 0.7001434720229556
+          }
+        }
+      },
+      {
+        "class_id": 5,
+        "class_name": "Fallow_smooth",
+        "total": 2678,
+        "splits": {
+          "train": {
+            "samples": 803,
+            "actual_fraction": 0.2998506348020911
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 1875,
+            "actual_fraction": 0.7001493651979089
+          }
+        }
+      },
+      {
+        "class_id": 6,
+        "class_name": "Stubble",
+        "total": 3959,
+        "splits": {
+          "train": {
+            "samples": 1188,
+            "actual_fraction": 0.3000757767112907
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 2771,
+            "actual_fraction": 0.6999242232887093
+          }
+        }
+      },
+      {
+        "class_id": 7,
+        "class_name": "Celery",
+        "total": 3579,
+        "splits": {
+          "train": {
+            "samples": 1074,
+            "actual_fraction": 0.3000838222967309
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 2505,
+            "actual_fraction": 0.6999161777032691
+          }
+        }
+      },
+      {
+        "class_id": 8,
+        "class_name": "Grapes_untrained",
+        "total": 11271,
+        "splits": {
+          "train": {
+            "samples": 3381,
+            "actual_fraction": 0.29997338301836574
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 7890,
+            "actual_fraction": 0.7000266169816343
+          }
+        }
+      },
+      {
+        "class_id": 9,
+        "class_name": "Soil_vinyard_develop",
+        "total": 6203,
+        "splits": {
+          "train": {
+            "samples": 1861,
+            "actual_fraction": 0.3000161212316621
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 4342,
+            "actual_fraction": 0.6999838787683379
+          }
+        }
+      },
+      {
+        "class_id": 10,
+        "class_name": "Corn_senesced_green_weeds",
+        "total": 3278,
+        "splits": {
+          "train": {
+            "samples": 983,
+            "actual_fraction": 0.29987797437461866
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 2295,
+            "actual_fraction": 0.7001220256253813
+          }
+        }
+      },
+      {
+        "class_id": 11,
+        "class_name": "Lettuce_romaine_4wk",
+        "total": 1068,
+        "splits": {
+          "train": {
+            "samples": 320,
+            "actual_fraction": 0.299625468164794
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 748,
+            "actual_fraction": 0.700374531835206
+          }
+        }
+      },
+      {
+        "class_id": 12,
+        "class_name": "Lettuce_romaine_5wk",
+        "total": 1927,
+        "splits": {
+          "train": {
+            "samples": 578,
+            "actual_fraction": 0.29994810586403736
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 1349,
+            "actual_fraction": 0.7000518941359626
+          }
+        }
+      },
+      {
+        "class_id": 13,
+        "class_name": "Lettuce_romaine_6wk",
+        "total": 916,
+        "splits": {
+          "train": {
+            "samples": 275,
+            "actual_fraction": 0.3002183406113537
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 641,
+            "actual_fraction": 0.6997816593886463
+          }
+        }
+      },
+      {
+        "class_id": 14,
+        "class_name": "Lettuce_romaine_7wk",
+        "total": 1070,
+        "splits": {
+          "train": {
+            "samples": 321,
+            "actual_fraction": 0.3
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 749,
+            "actual_fraction": 0.7
+          }
+        }
+      },
+      {
+        "class_id": 15,
+        "class_name": "Vinyard_untrained",
+        "total": 7268,
+        "splits": {
+          "train": {
+            "samples": 2180,
+            "actual_fraction": 0.2999449642267474
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 5088,
+            "actual_fraction": 0.7000550357732526
+          }
+        }
+      },
+      {
+        "class_id": 16,
+        "class_name": "Vinyard_vertical_trellis",
+        "total": 1807,
+        "splits": {
+          "train": {
+            "samples": 542,
+            "actual_fraction": 0.2999446596568899
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 1265,
+            "actual_fraction": 0.7000553403431101
+          }
+        }
+      }
+    ]
+  }
+}

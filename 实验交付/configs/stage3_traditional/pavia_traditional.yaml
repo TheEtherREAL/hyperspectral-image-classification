@@ -1,0 +1,43 @@
+# ============================================================
+# 第三阶段 · 传统分类方法对比配置（Pavia University）
+# 说明：notebook 03 读取本文件，逐个测试传统分类器性能。
+#       所有方法均使用阶段一 PCA15 中心像元光谱特征，保证与 HybridSN 公平对比。
+# ============================================================
+
+experiment:
+  name: pavia_traditional_comparison
+  seed: 1442
+
+stage1_manifest: outputs/stage1/pavia_university/stage1_manifest.json
+
+classifiers:
+  svm:
+    kernel: rbf              # 核函数
+    C: 16.0                  # 正则化系数（可调）
+    gamma: scale             # 核系数（scale=1/(n_features*var)）
+  knn:
+    n_neighbors: 5           # 近邻数（可调）
+    weights: distance
+  lda: {}                    # 线性判别分析（作为分类器，无额外超参数）
+  random_forest:
+    n_estimators: 200        # 树的数量（可调）
+    max_depth: null          # 树的最大深度（null=不限制）
+    max_features: sqrt
+  xgboost:
+    n_estimators: 200        # 提升轮数（可调）
+    max_depth: 6             # 树深度
+    learning_rate: 0.05      # 学习率
+    subsample: 0.9           # 样本采样比例
+    colsample_bytree: 0.9    # 特征采样比例
+
+methods:                     # 逐个测试的方法列表（每个 notebook 代码块跑一种）
+  PCA15_SVM:
+    display_name: SVM
+  PCA15_KNN:
+    display_name: KNN
+  PCA15_LDA:
+    display_name: LDA
+  PCA15_RandomForest:
+    display_name: 随机森林
+  PCA15_XGBoost:
+    display_name: XGBoost

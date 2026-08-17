@@ -17,7 +17,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = PROJECT_ROOT / "data" / "raw"
 SPLIT_DIR = PROJECT_ROOT / "data" / "splits"
 DATASET_NAME = "pavia_university"
-SEED = 345
+SEED = 1442
 PROTOCOLS = ("paper30", "fair24_6_70")
 
 

@@ -12,6 +12,7 @@ dist/
 .idea/
 .vscode/
 .codex/
+.codex_tmp/
 .agents/
 *.code-workspace
 .DS_Store
@@ -29,7 +30,9 @@ data/raw/*
 !data/raw/KAGGLE_ARCHIVE_CHECKSUMS.md
 
 # Processed data are ignored by default. Only the small, frozen Pavia
-# preprocessing states required for exact stage-2 reproduction are versioned.
+# preprocessing states required for exact reproduction are versioned. The
+# seed345 entries below are retained only so historical artifacts stay visible;
+# every current experiment and new frozen route uses seed1442.
 data/processed/**
 !data/processed/.gitkeep
 !data/processed/dataset_inventory.json
@@ -49,6 +52,18 @@ data/processed/**
 !data/processed/pavia_university/paper30__seed345__standard_lda8_patch25/
 !data/processed/pavia_university/paper30__seed345__standard_lda8_patch25/metadata.json
 !data/processed/pavia_university/paper30__seed345__standard_lda8_patch25/preprocessing_state.npz
+!data/processed/pavia_university/fair24_6_70__seed1442__standard_pca15_patch25/
+!data/processed/pavia_university/fair24_6_70__seed1442__standard_pca15_patch25/metadata.json
+!data/processed/pavia_university/fair24_6_70__seed1442__standard_pca15_patch25/preprocessing_state.npz
+!data/processed/pavia_university/paper30__seed1442__standard_pca15_patch25/
+!data/processed/pavia_university/paper30__seed1442__standard_pca15_patch25/metadata.json
+!data/processed/pavia_university/paper30__seed1442__standard_pca15_patch25/preprocessing_state.npz
+!data/processed/pavia_university/fair24_6_70__seed1442__standard_lda8_patch25/
+!data/processed/pavia_university/fair24_6_70__seed1442__standard_lda8_patch25/metadata.json
+!data/processed/pavia_university/fair24_6_70__seed1442__standard_lda8_patch25/preprocessing_state.npz
+!data/processed/pavia_university/paper30__seed1442__standard_lda8_patch25/
+!data/processed/pavia_university/paper30__seed1442__standard_lda8_patch25/metadata.json
+!data/processed/pavia_university/paper30__seed1442__standard_lda8_patch25/preprocessing_state.npz
 
 # Fixed split NPZ/JSON/CSV files are deliberately versioned because all models
 # must use the same sample identities.
@@ -87,3 +102,14 @@ results/**
 # Local Codex hand-off notes contain machine-specific paths and are not needed
 # by GitHub collaborators; TASK_BOARD and CONTRIBUTING are the public hand-off.
 docs/NEW_WINDOW_START.md
+
+# 运行产物（任何 outputs 目录、Joblib 序列化模型）体积大，仅保留在本地，不入库。
+outputs/
+*.joblib
+
+# 课程作业的 Word/PDF 报告与渲染中间产物不入库，仅保留 markdown 源。
+coursework/report/*.docx
+coursework/report/*.pdf
+coursework/report/rendered_*/
+coursework/report/template_audit/
+coursework/jupyter_runtime/

@@ -2,7 +2,7 @@
 dataset:
   name: pavia_university
   split_protocol: fair24_6_70
-  split_seed: 345
+  split_seed: 1442
 
 spectral_preprocessing:
   standardization: standard

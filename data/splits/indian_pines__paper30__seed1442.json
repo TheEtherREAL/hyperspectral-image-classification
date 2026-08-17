@@ -1,0 +1,450 @@
+{
+  "dataset": {
+    "name": "indian_pines",
+    "cube_shape": [
+      145,
+      145,
+      200
+    ],
+    "label_shape": [
+      145,
+      145
+    ],
+    "data_key": "indian_pines_corrected",
+    "label_key": "indian_pines_gt",
+    "background_label": 0,
+    "class_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16
+    ],
+    "class_names": [
+      "Alfalfa",
+      "Corn-notill",
+      "Corn-mintill",
+      "Corn",
+      "Grass-pasture",
+      "Grass-trees",
+      "Grass-pasture-mowed",
+      "Hay-windrowed",
+      "Oats",
+      "Soybean-notill",
+      "Soybean-mintill",
+      "Soybean-clean",
+      "Wheat",
+      "Woods",
+      "Buildings-Grass-Trees-Drives",
+      "Stone-Steel-Towers"
+    ],
+    "labeled_pixels": 10249,
+    "source_files": {
+      "Indian_pines_corrected.mat": {
+        "bytes": 5953527,
+        "md5": "66dbc9f4a9b7c9b1445f60a87b505101",
+        "sha256": "ec2f8808710919d566f70f0d4aa885aae1ddfd42b734aba71c5e12ca65450939",
+        "mat_variables": [
+          "indian_pines_corrected"
+        ]
+      },
+      "Indian_pines_gt.mat": {
+        "bytes": 1125,
+        "md5": "9414943dac1d80faaa9165c8b460510c",
+        "sha256": "65c4687a8ab04f6da4789799bc3bc4f6e88bccac3ed6a2e6ae367e5e6b9e429c",
+        "mat_variables": [
+          "indian_pines_gt"
+        ]
+      }
+    }
+  },
+  "sample_representation": {
+    "coordinates": "zero-based (row, column) in the original label map",
+    "labels": "original dataset class IDs 1..C; background 0 is excluded",
+    "split_ids": {
+      "0": "train",
+      "1": "validation",
+      "2": "test"
+    },
+    "indices": "positions into the aligned coordinates and labels arrays"
+  },
+  "partition_algorithm": {
+    "implementation": "sklearn.model_selection.train_test_split",
+    "shuffle": true,
+    "stratify": "original class label",
+    "steps": [
+      {
+        "name": "shared paper train / test split",
+        "train_size": 0.3,
+        "test_size": 0.7,
+        "random_state": 1442
+      },
+      {
+        "name": "fair train / validation split within the 30% pool",
+        "train_size": 0.8,
+        "test_size": 0.2,
+        "random_state": 1442
+      }
+    ],
+    "relationship": "Both protocols share the same test indices; fair train plus validation equals the paper30 training pool.",
+    "rounding": "Actual integer counts are authoritative and recorded in statistics."
+  },
+  "software": {
+    "python": "3.12.13",
+    "numpy": "2.5.2",
+    "scikit_learn": "1.9.0"
+  },
+  "schema_version": "1.0",
+  "dataset_name": "indian_pines",
+  "protocol": {
+    "name": "paper30",
+    "purpose": "HybridSN paper-compatible 30% train / 70% test reproduction",
+    "seed": 1442,
+    "target_fractions": {
+      "train": 0.3,
+      "validation": 0.0,
+      "test": 0.7
+    }
+  },
+  "artifacts": {
+    "npz": "indian_pines__paper30__seed1442.npz",
+    "metadata": "indian_pines__paper30__seed1442.json",
+    "statistics": "indian_pines__paper30__seed1442__stats.csv"
+  },
+  "statistics": {
+    "overall": {
+      "train": {
+        "samples": 3074,
+        "target_fraction": 0.3,
+        "actual_fraction": 0.2999317006537223
+      },
+      "validation": {
+        "samples": 0,
+        "target_fraction": 0.0,
+        "actual_fraction": 0.0
+      },
+      "test": {
+        "samples": 7175,
+        "target_fraction": 0.7,
+        "actual_fraction": 0.7000682993462777
+      }
+    },
+    "by_class": [
+      {
+        "class_id": 1,
+        "class_name": "Alfalfa",
+        "total": 46,
+        "splits": {
+          "train": {
+            "samples": 14,
+            "actual_fraction": 0.30434782608695654
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 32,
+            "actual_fraction": 0.6956521739130435
+          }
+        }
+      },
+      {
+        "class_id": 2,
+        "class_name": "Corn-notill",
+        "total": 1428,
+        "splits": {
+          "train": {
+            "samples": 428,
+            "actual_fraction": 0.29971988795518206
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 1000,
+            "actual_fraction": 0.7002801120448179
+          }
+        }
+      },
+      {
+        "class_id": 3,
+        "class_name": "Corn-mintill",
+        "total": 830,
+        "splits": {
+          "train": {
+            "samples": 249,
+            "actual_fraction": 0.3
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 581,
+            "actual_fraction": 0.7
+          }
+        }
+      },
+      {
+        "class_id": 4,
+        "class_name": "Corn",
+        "total": 237,
+        "splits": {
+          "train": {
+            "samples": 71,
+            "actual_fraction": 0.29957805907172996
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 166,
+            "actual_fraction": 0.70042194092827
+          }
+        }
+      },
+      {
+        "class_id": 5,
+        "class_name": "Grass-pasture",
+        "total": 483,
+        "splits": {
+          "train": {
+            "samples": 145,
+            "actual_fraction": 0.3002070393374741
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 338,
+            "actual_fraction": 0.6997929606625258
+          }
+        }
+      },
+      {
+        "class_id": 6,
+        "class_name": "Grass-trees",
+        "total": 730,
+        "splits": {
+          "train": {
+            "samples": 219,
+            "actual_fraction": 0.3
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 511,
+            "actual_fraction": 0.7
+          }
+        }
+      },
+      {
+        "class_id": 7,
+        "class_name": "Grass-pasture-mowed",
+        "total": 28,
+        "splits": {
+          "train": {
+            "samples": 8,
+            "actual_fraction": 0.2857142857142857
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 20,
+            "actual_fraction": 0.7142857142857143
+          }
+        }
+      },
+      {
+        "class_id": 8,
+        "class_name": "Hay-windrowed",
+        "total": 478,
+        "splits": {
+          "train": {
+            "samples": 143,
+            "actual_fraction": 0.29916317991631797
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 335,
+            "actual_fraction": 0.700836820083682
+          }
+        }
+      },
+      {
+        "class_id": 9,
+        "class_name": "Oats",
+        "total": 20,
+        "splits": {
+          "train": {
+            "samples": 6,
+            "actual_fraction": 0.3
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 14,
+            "actual_fraction": 0.7
+          }
+        }
+      },
+      {
+        "class_id": 10,
+        "class_name": "Soybean-notill",
+        "total": 972,
+        "splits": {
+          "train": {
+            "samples": 292,
+            "actual_fraction": 0.3004115226337449
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 680,
+            "actual_fraction": 0.6995884773662552
+          }
+        }
+      },
+      {
+        "class_id": 11,
+        "class_name": "Soybean-mintill",
+        "total": 2455,
+        "splits": {
+          "train": {
+            "samples": 736,
+            "actual_fraction": 0.29979633401221994
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 1719,
+            "actual_fraction": 0.70020366598778
+          }
+        }
+      },
+      {
+        "class_id": 12,
+        "class_name": "Soybean-clean",
+        "total": 593,
+        "splits": {
+          "train": {
+            "samples": 178,
+            "actual_fraction": 0.30016863406408095
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 415,
+            "actual_fraction": 0.6998313659359191
+          }
+        }
+      },
+      {
+        "class_id": 13,
+        "class_name": "Wheat",
+        "total": 205,
+        "splits": {
+          "train": {
+            "samples": 62,
+            "actual_fraction": 0.3024390243902439
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 143,
+            "actual_fraction": 0.697560975609756
+          }
+        }
+      },
+      {
+        "class_id": 14,
+        "class_name": "Woods",
+        "total": 1265,
+        "splits": {
+          "train": {
+            "samples": 379,
+            "actual_fraction": 0.29960474308300394
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 886,
+            "actual_fraction": 0.700395256916996
+          }
+        }
+      },
+      {
+        "class_id": 15,
+        "class_name": "Buildings-Grass-Trees-Drives",
+        "total": 386,
+        "splits": {
+          "train": {
+            "samples": 116,
+            "actual_fraction": 0.3005181347150259
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 270,
+            "actual_fraction": 0.6994818652849741
+          }
+        }
+      },
+      {
+        "class_id": 16,
+        "class_name": "Stone-Steel-Towers",
+        "total": 93,
+        "splits": {
+          "train": {
+            "samples": 28,
+            "actual_fraction": 0.3010752688172043
+          },
+          "validation": {
+            "samples": 0,
+            "actual_fraction": 0.0
+          },
+          "test": {
+            "samples": 65,
+            "actual_fraction": 0.6989247311827957
+          }
+        }
+      }
+    ]
+  }
+}

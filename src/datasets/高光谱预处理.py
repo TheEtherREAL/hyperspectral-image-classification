@@ -26,8 +26,8 @@ from .数据集注册 import DATASETS, DatasetSpec
 
 PREPROCESSING_SCHEMA_VERSION = "1.0"
 SUPPORTED_STANDARDIZATION = {"none", "standard"}
-SUPPORTED_REDUCERS = {"none", "pca", "lda"}
-PLANNED_REDUCERS = {"band_selection"}
+SUPPORTED_REDUCERS = {"none", "pca", "lda", "band_selection"}
+SUPPORTED_BAND_SELECTION_METHODS = {"uniform", "fisher"}
 SUPPORTED_REPRESENTATIONS = {"pixel", "patch"}
 PLANNED_REPRESENTATIONS = {"lbp", "gabor"}
 SUPPORTED_PADDING_MODES = {"constant", "reflect", "edge"}
@@ -40,11 +40,12 @@ class PreprocessingConfig:
 
     dataset_name: str = "pavia_university"
     split_protocol: str = "fair24_6_70"
-    split_seed: int = 345
+    split_seed: int = 1442
     standardization: str = "standard"
     reducer: str = "pca"
     n_components: int | None = 15
     whiten: bool = False
+    band_selection_method: str = "fisher"
     representation: str = "patch"
     patch_size: int = 25
     padding_mode: str = "constant"
@@ -62,13 +63,9 @@ class PreprocessingConfig:
             raise ValueError(
                 f"standardization must be one of {sorted(SUPPORTED_STANDARDIZATION)}"
             )
-        if self.reducer in PLANNED_REDUCERS:
-            raise NotImplementedError(
-                f"reducer {self.reducer!r} is reserved for a later comparison route"
-            )
         if self.reducer not in SUPPORTED_REDUCERS:
             raise ValueError(f"unsupported reducer: {self.reducer!r}")
-        if self.reducer in {"pca", "lda"} and (
+        if self.reducer in {"pca", "lda", "band_selection"} and (
             self.n_components is None or self.n_components < 1
         ):
             raise ValueError(
@@ -85,6 +82,14 @@ class PreprocessingConfig:
                 raise ValueError("whiten is a PCA-only option and must be false for LDA")
         if self.reducer == "none" and self.n_components is not None:
             raise ValueError("n_components must be null when reducer='none'")
+        if (
+            self.reducer == "band_selection"
+            and self.band_selection_method not in SUPPORTED_BAND_SELECTION_METHODS
+        ):
+            raise ValueError(
+                "band_selection_method must be one of "
+                f"{sorted(SUPPORTED_BAND_SELECTION_METHODS)}"
+            )
         if self.representation in PLANNED_REPRESENTATIONS:
             raise NotImplementedError(
                 f"representation {self.representation!r} is reserved for a later route"
@@ -119,19 +124,28 @@ class PreprocessingConfig:
                 "n_components", spectral.get("n_components", 8)
             )
             whiten = False
+        elif reducer == "band_selection":
+            reducer_values = spectral.get("band_selection", {})
+            n_components = reducer_values.get(
+                "n_components", spectral.get("n_components", 15)
+            )
+            whiten = False
         else:
             n_components = None
             whiten = False
         config = cls(
             dataset_name=dataset.get("name", "pavia_university"),
             split_protocol=dataset.get("split_protocol", "fair24_6_70"),
-            split_seed=int(dataset.get("split_seed", 345)),
+            split_seed=int(dataset.get("split_seed", 1442)),
             standardization=spectral.get(
                 "standardization", dataset.get("normalization", "standard")
             ),
             reducer=reducer,
             n_components=n_components,
             whiten=whiten,
+            band_selection_method=str(
+                spectral.get("band_selection", {}).get("method", "fisher")
+            ).strip().lower(),
             representation=spatial.get("representation", "patch"),
             patch_size=int(spatial.get("patch_size", 25)),
             padding_mode=spatial.get("padding_mode", "constant"),
@@ -142,7 +156,12 @@ class PreprocessingConfig:
         return config
 
     def fingerprint(self) -> str:
-        payload = json.dumps(asdict(self), sort_keys=True, separators=(",", ":"))
+        values = asdict(self)
+        # Preserve fingerprints of every pre-existing PCA/LDA/raw artifact.
+        # The new selector option only belongs in the identity of selector routes.
+        if self.reducer != "band_selection":
+            values.pop("band_selection_method")
+        payload = json.dumps(values, sort_keys=True, separators=(",", ":"))
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
     def route_name(self) -> str:
@@ -592,6 +611,112 @@ class LDASpectralReducer:
         return instance
 
 
+class BandSelectionReducer:
+    """Select original bands with a deterministic train-only criterion.
+
+    ``uniform`` preserves evenly spaced wavelengths and does not use labels.
+    ``fisher`` ranks bands by between-class/within-class scatter computed only
+    from training-center spectra, then restores their original spectral order.
+    """
+
+    name = "band_selection"
+
+    def __init__(self, n_components: int, *, method: str = "fisher") -> None:
+        self.n_components = int(n_components)
+        self.method = str(method).strip().lower()
+        self.n_features_in_: int | None = None
+        self.n_samples_seen_: int | None = None
+        self.selected_indices_: np.ndarray | None = None
+        self.scores_: np.ndarray | None = None
+
+    @property
+    def fitted(self) -> bool:
+        return self.selected_indices_ is not None
+
+    @property
+    def n_output_features(self) -> int:
+        if not self.fitted:
+            raise RuntimeError("reducer has not been fitted")
+        return int(self.selected_indices_.size)
+
+    def fit(
+        self,
+        spectra: np.ndarray,
+        labels: np.ndarray | None = None,
+    ) -> "BandSelectionReducer":
+        values = _validate_spectral_matrix(spectra)
+        if self.method not in SUPPORTED_BAND_SELECTION_METHODS:
+            raise ValueError(f"unsupported band-selection method: {self.method!r}")
+        if not 1 <= self.n_components <= values.shape[1]:
+            raise ValueError("band-selection component count exceeds input bands")
+        self.n_features_in_ = int(values.shape[1])
+        self.n_samples_seen_ = int(values.shape[0])
+        if self.method == "uniform":
+            indices = np.rint(
+                np.linspace(0, values.shape[1] - 1, self.n_components)
+            ).astype(np.int64)
+            if np.unique(indices).size != self.n_components:
+                raise AssertionError("uniform band selection produced duplicate indices")
+            self.scores_ = np.full(values.shape[1], np.nan, dtype=np.float64)
+        else:
+            if labels is None:
+                raise ValueError("Fisher band selection requires training labels")
+            target = np.asarray(labels).reshape(-1)
+            if target.size != values.shape[0]:
+                raise ValueError("band-selection labels must align with spectra")
+            classes = np.unique(target)
+            if classes.size < 2:
+                raise ValueError("Fisher band selection requires at least two classes")
+            global_mean = values.mean(axis=0)
+            between = np.zeros(values.shape[1], dtype=np.float64)
+            within = np.zeros(values.shape[1], dtype=np.float64)
+            for class_label in classes:
+                class_values = values[target == class_label]
+                class_mean = class_values.mean(axis=0)
+                between += class_values.shape[0] * np.square(class_mean - global_mean)
+                within += np.square(class_values - class_mean).sum(axis=0)
+            self.scores_ = between / np.maximum(within, np.finfo(np.float64).eps)
+            ranked = np.argsort(-self.scores_, kind="mergesort")[: self.n_components]
+            indices = np.sort(ranked.astype(np.int64))
+        self.selected_indices_ = indices
+        return self
+
+    def transform(self, spectra: np.ndarray) -> np.ndarray:
+        if not self.fitted:
+            raise RuntimeError("band selector must be fitted before transform")
+        values = _validate_spectral_matrix(spectra)
+        if values.shape[1] != self.n_features_in_:
+            raise ValueError("spectral band count does not match fitted band selector")
+        return values[:, self.selected_indices_]
+
+    def state(self) -> dict[str, np.ndarray]:
+        if not self.fitted:
+            raise RuntimeError("reducer has no fitted state")
+        return {
+            "reducer_name": np.asarray(self.name),
+            "reducer_method": np.asarray(self.method),
+            "reducer_n_features_in": np.asarray(self.n_features_in_, dtype=np.int64),
+            "reducer_n_samples_seen": np.asarray(self.n_samples_seen_, dtype=np.int64),
+            "reducer_n_components": np.asarray(self.n_components, dtype=np.int64),
+            "reducer_selected_indices": self.selected_indices_,
+            "reducer_scores": self.scores_,
+        }
+
+    @classmethod
+    def from_state(cls, artifact: Mapping[str, np.ndarray]) -> "BandSelectionReducer":
+        instance = cls(
+            n_components=int(_scalar(artifact["reducer_n_components"])),
+            method=str(_scalar(artifact["reducer_method"])),
+        )
+        instance.n_features_in_ = int(_scalar(artifact["reducer_n_features_in"]))
+        instance.n_samples_seen_ = int(_scalar(artifact["reducer_n_samples_seen"]))
+        instance.selected_indices_ = np.asarray(
+            artifact["reducer_selected_indices"], dtype=np.int64
+        ).copy()
+        instance.scores_ = np.asarray(artifact["reducer_scores"], dtype=np.float64).copy()
+        return instance
+
+
 def _validate_spectral_matrix(spectra: np.ndarray) -> np.ndarray:
     values = np.asarray(spectra, dtype=np.float64)
     if values.ndim != 2:
@@ -605,13 +730,17 @@ def _validate_spectral_matrix(spectra: np.ndarray) -> np.ndarray:
 
 def _build_reducer(
     config: PreprocessingConfig,
-) -> IdentityReducer | PCASpectralReducer | LDASpectralReducer:
+) -> IdentityReducer | PCASpectralReducer | LDASpectralReducer | BandSelectionReducer:
     if config.reducer == "none":
         return IdentityReducer()
     if config.reducer == "pca":
         return PCASpectralReducer(int(config.n_components), whiten=config.whiten)
     if config.reducer == "lda":
         return LDASpectralReducer(int(config.n_components))
+    if config.reducer == "band_selection":
+        return BandSelectionReducer(
+            int(config.n_components), method=config.band_selection_method
+        )
     raise AssertionError(f"validated reducer is not implemented: {config.reducer}")
 
 
@@ -875,6 +1004,8 @@ class HSIPreprocessingPipeline:
             instance.reducer = PCASpectralReducer.from_state(artifact)
         elif reducer_name == "lda":
             instance.reducer = LDASpectralReducer.from_state(artifact)
+        elif reducer_name == "band_selection":
+            instance.reducer = BandSelectionReducer.from_state(artifact)
         else:
             raise ValueError(f"unsupported reducer in saved state: {reducer_name!r}")
         instance.fit_metadata_ = metadata
@@ -915,6 +1046,19 @@ class HSIPreprocessingPipeline:
                     "cumulative_explained_variance_ratio": float(
                         self.reducer.explained_variance_ratio_.sum()
                     ),
+                }
+            )
+        elif isinstance(self.reducer, BandSelectionReducer):
+            reducer_details.update(
+                {
+                    "method": self.reducer.method,
+                    "supervised": self.reducer.method == "fisher",
+                    "selected_band_indices_zero_based": (
+                        self.reducer.selected_indices_.tolist()
+                    ),
+                    "selected_band_numbers_one_based": (
+                        self.reducer.selected_indices_ + 1
+                    ).tolist(),
                 }
             )
 

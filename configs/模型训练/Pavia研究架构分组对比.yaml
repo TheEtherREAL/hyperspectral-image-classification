@@ -1,0 +1,70 @@
+# 研究架构图对应的控制变量实验：统一使用 fair24_6_70 和 seed=1442。
+experiment:
+  name: pavia_research_architecture_group_comparison
+  seed: 1442
+  output_root: experiments
+
+dataset:
+  name: pavia_university
+  split_protocol: fair24_6_70
+  split_seed: 1442
+
+reduction:
+  pca_components: 15
+  lda_components: 8
+  selected_bands: 15
+
+spatial_features:
+  component_count: 3
+  lbp_bins: 16
+  pooling_window: 9
+  gabor_orientations: [0.0, 45.0, 90.0, 135.0]
+  gabor_frequencies: [0.1, 0.2]
+  gabor_sigma: 2.5
+  gabor_gamma: 0.5
+  gabor_radius: 6
+
+classifiers:
+  svm:
+    kernel: rbf
+    C: 16.0
+    gamma: scale
+    cache_size_mb: 2048
+  histogram_gradient_boosting:
+    learning_rate: 0.1
+    max_iter: 150
+    max_leaf_nodes: 31
+    l2_regularization: 1.0
+    early_stopping: false
+
+groups:
+  reduction_control:
+    - R1_PCA15_SVM
+    - R2_LDA8_SVM
+    - R3_Uniform15_SVM
+  spatial_ablation:
+    - R1_PCA15_SVM
+    - S1_PCA15_LBP_SVM
+    - S2_PCA15_Gabor_SVM
+    - S3_PCA15_LBP_Gabor_SVM
+  classifier_control:
+    - S3_PCA15_LBP_Gabor_SVM
+    - C1_PCA15_LBP_Gabor_HistGB
+  paradigm_control:
+    - R1_PCA15_SVM
+    - S3_PCA15_LBP_Gabor_SVM
+    - D1_PCA15_HybridSN
+    - D2_Uniform15_HybridSN
+    - D3_Fisher15_HybridSN
+
+deep_results:
+  source_pattern: hybridsn_preprocessing_comparison__fair24_6_70__seed1442__*
+  variants:
+    D1_PCA15_HybridSN: standard_pca15
+    D2_Uniform15_HybridSN: standard_uniform15
+    D3_Fisher15_HybridSN: standard_fisher15
+
+evaluation:
+  metrics: [oa, aa, kappa, per_class_accuracy]
+  save_all_labeled_map: true
+  selection_rule: fixed_hyperparameters_no_test_tuning

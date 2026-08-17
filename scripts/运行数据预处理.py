@@ -122,7 +122,7 @@ def load_workflow_settings(
             purpose="确定唯一的数据集、固定划分、光谱处理、空间表示和 DataLoader 参数。",
             inputs=f"YAML 配置文件 {config_path}",
             outputs="经过类型和取值校验的 WorkflowSettings。",
-            acceptance="协议 seed=345，参数有效，且能定位唯一的冻结状态目录。",
+            acceptance="协议 seed=1442，参数有效，且能定位唯一的冻结状态目录。",
         )
     root = Path(project_root).resolve()
     resolved_config = _resolve_path(root, config_path)
@@ -136,7 +136,7 @@ def load_workflow_settings(
         batch_size if batch_size is not None else loader_values.get("batch_size", 256)
     )
     resolved_loader_seed = int(
-        loader_seed if loader_seed is not None else loader_values.get("loader_seed", 42)
+        loader_seed if loader_seed is not None else loader_values.get("loader_seed", 1442)
     )
     resolved_num_workers = int(
         num_workers if num_workers is not None else loader_values.get("num_workers", 0)
@@ -145,6 +145,10 @@ def load_workflow_settings(
         raise ValueError("batch_size must be positive")
     if resolved_num_workers < 0:
         raise ValueError("num_workers must be non-negative")
+    if resolved_loader_seed != config.split_seed:
+        raise ValueError(
+            "loader_seed must equal split_seed under the unified-seed experiment protocol"
+        )
 
     if pin_memory == "auto" and "pin_memory" in loader_values:
         resolved_pin_memory = bool(loader_values["pin_memory"]) and torch.cuda.is_available()
@@ -194,7 +198,7 @@ def load_fixed_dataset(
             "读取数据与固定划分",
             "Load data and frozen split",
             purpose="建立每个有标签像元的光谱、二维坐标、标签和 split 身份。",
-            inputs="原始 .mat 文件，以及 seed=345 的既有 .npz/.json 划分。",
+            inputs="原始 .mat 文件，以及 seed=1442 的既有 .npz/.json 划分。",
             outputs="HSIDataBundle；不生成新划分。",
             acceptance="坐标与标签图一致，三组覆盖全部有标签像元且互不重叠。",
         )
@@ -238,7 +242,7 @@ def verify_frozen_split_relationships(
         print("\n" + "-" * 78)
         print("[检查 2C | Check 2C] 固定划分约束 / Frozen split contract")
         print("目的 / Purpose: 显式确认无交集、全覆盖、类别覆盖和两协议共享关系。")
-        print("输入 / Input: 当前 HSIDataBundle 与两套既有 seed=345 split 文件。")
+        print("输入 / Input: 当前 HSIDataBundle 与两套既有 seed=1442 split 文件。")
         print("输出 / Output: 当前协议和跨协议的布尔验收结果；不生成新划分。")
         print("验收 / Acceptance: 所有约束均为 True。")
 

@@ -1,0 +1,50 @@
+# ============================================================
+# 第一阶段 · 数据预处理配置（Pavia University）
+# 说明：本文件决定「读取哪个数据集 + 如何降维 + 如何划分」。
+#       notebook 01 读取本文件完成预处理，并输出模型就绪数据与 manifest。
+# ============================================================
+
+experiment:
+  name: pavia_university_stage1
+  seed: 1442                    # 全局随机种子（划分固定，勿改）
+
+dataset:
+  name: pavia_university        # 数据集标识（见 notebook 01 的 DATASETS 注册表）
+  split_protocol: fair24_6_70   # 划分方案：24%训练 / 6%验证 / 70%测试
+  split_seed: 1442              # 划分种子（须与 experiment.seed 一致）
+
+selected_route: pca15           # 下游模型默认使用的预处理路线
+                                # 可改：raw_all_bands / pca15 / lda8 / uniform15 / fisher15
+
+routes:                         # 五条可复现的预处理路线（同一数据集可同时生成）
+  raw_all_bands:                # ① 原始波段（仅标准化，不降维，103 维）
+    standardization: standard
+    reducer: none
+  pca15:                        # ② PCA 降到 15 维
+    standardization: standard
+    reducer: pca
+    n_components: 15            # PCA 主成分个数（可调）
+    whiten: false
+  lda8:                         # ③ LDA 降到 8 维（Pavia 9 类 → 上限 classes-1=8）
+    standardization: standard
+    reducer: lda
+    n_components: 8             # LDA 维度，须 ≤ 类别数-1
+  uniform15:                    # ④ 波段选择——等间隔均匀选取 15 个波段
+    standardization: standard
+    reducer: band_selection
+    method: uniform
+    n_components: 15
+  fisher15:                     # ⑤ 波段选择——按 Fisher 判别得分选 15 个波段
+    standardization: standard
+    reducer: band_selection
+    method: fisher
+    n_components: 15
+
+spatial_preprocessing:          # 空间块（patch）提取设置
+  representation: patch         # patch：以像元为中心取邻域块
+  patch_size: 25                # 邻域块边长（奇数；HybridSN 输入尺寸）
+  padding_mode: constant        # 边缘补零方式
+  padding_value: 0.0
+
+output:
+  dtype: float32                # 输出数据类型

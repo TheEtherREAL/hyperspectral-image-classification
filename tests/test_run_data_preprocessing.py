@@ -21,9 +21,9 @@ def test_default_settings_match_the_frozen_fair_route() -> None:
 
     assert settings.project_root == PROJECT_ROOT
     assert settings.config.split_protocol == "fair24_6_70"
-    assert settings.config.split_seed == 345
+    assert settings.config.split_seed == 1442
     assert settings.config.route_name() == (
-        "fair24_6_70__seed345__standard_pca15_patch25"
+        "fair24_6_70__seed1442__standard_pca15_patch25"
     )
     assert (settings.state_dir / "preprocessing_state.npz").is_file()
     assert (settings.state_dir / "metadata.json").is_file()
