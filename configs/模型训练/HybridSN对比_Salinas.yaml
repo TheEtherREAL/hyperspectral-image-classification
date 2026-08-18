@@ -1,0 +1,43 @@
+# HybridSN 支路（PCA15 + 25x25 patch），Salinas，用于四模型对比。
+# 模型名用 --model 覆盖：hybridsn / improved_hybridsn。
+experiment:
+  name: salinas_hybridsn_comparison
+  seed: 1442
+  output_root: experiments
+
+dataset:
+  name: salinas
+  split_protocol: fair24_6_70
+  split_seed: 1442
+
+spectral_preprocessing:
+  standardization: standard
+  reducer: pca
+  pca:
+    n_components: 15
+    whiten: false
+
+spatial_preprocessing:
+  representation: patch
+  patch_size: 25
+  padding_mode: constant
+  padding_value: 0.0
+
+output:
+  dtype: float32
+
+model:
+  name: hybridsn
+  dropout: 0.4
+  num_classes: 16
+
+training:
+  optimizer: adam
+  learning_rate: 0.001
+  batch_size: 256
+  epochs: 30
+  weight_decay: 0.0
+  checkpoint_every: 10
+  early_stopping_metric: accuracy
+  early_stopping_min_delta: 0.0
+  early_stopping_patience: 12

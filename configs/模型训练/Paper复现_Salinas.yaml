@@ -1,0 +1,41 @@
+# 论文复现支路（原始波段 + 11x11 patch，不做 PCA），Salinas。
+# 模型名用 --model 覆盖：paper3dcnn / paper3d1dcnn / improvedpaper3d1dcnn。
+experiment:
+  name: salinas_paper_reproduction
+  seed: 1442
+  output_root: experiments
+
+dataset:
+  name: salinas
+  split_protocol: fair24_6_70
+  split_seed: 1442
+
+spectral_preprocessing:
+  standardization: standard
+  reducer: none
+
+spatial_preprocessing:
+  representation: patch
+  patch_size: 11
+  padding_mode: constant
+  padding_value: 0.0
+
+output:
+  dtype: float32
+
+model:
+  name: paper3d1dcnn
+  dropout: 0.5
+  num_classes: 16
+
+training:
+  optimizer: sgd
+  learning_rate: 0.0001
+  momentum: 0.9
+  batch_size: 64
+  epochs: 300
+  weight_decay: 0.0
+  checkpoint_every: 10
+  early_stopping_metric: loss
+  early_stopping_min_delta: 0.003
+  early_stopping_patience: 10

@@ -1,0 +1,4 @@
+﻿dataset,model,params,output_bands,patch_size,epochs_trained,max_epochs,train_seconds,mean_epoch_seconds,oa,aa,kappa,test_samples,output_dir
+Pavia University,Paper3DCNN,771041,103,11,155,300,1454.2727090999997,9.127531151612862,0.9900480897675661,0.9836922843856066,0.9868060526893506,29944,G:\高光谱智能图像解译\实验交付\experiments\pavia_university__paper3dcnn__fair24_6_70__seed1442__20260818-2334
+Pavia University,Paper3D1DCNN,214561,103,11,122,300,1144.2268235000001,9.12811354508198,0.9877437884050227,0.9794673395854624,0.9837559456779462,29944,G:\高光谱智能图像解译\实验交付\experiments\pavia_university__paper3d1dcnn__fair24_6_70__seed1442__20260818-2314
+Pavia University,改进Paper3D1DCNN,201993,103,11,167,300,1698.8425791999998,9.857184113772458,0.9802297622228159,0.9692556006748568,0.9737919879733362,29944,G:\高光谱智能图像解译\实验交付\experiments\pavia_university__improvedpaper3d1dcnn__fair24_6_70__seed1442__20260818-2359
