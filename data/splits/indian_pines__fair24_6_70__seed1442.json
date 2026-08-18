@@ -1,6 +1,15 @@
 {
   "dataset": "indian_pines",
-  "protocol": "fair24_6_70",
+  "protocol": {
+    "name": "fair24_6_70",
+    "purpose": "24% train / 6% validation / 70% test fair model comparison",
+    "seed": 1442,
+    "target_fractions": {
+      "train": 0.24,
+      "validation": 0.06,
+      "test": 0.7
+    }
+  },
   "seed": 1442,
   "class_names": [
     "Alfalfa",
@@ -22,5 +31,7 @@
   ],
   "train": 2459,
   "validation": 615,
-  "test": 7175
+  "test": 7175,
+  "schema_version": "1.0",
+  "dataset_name": "indian_pines"
 }

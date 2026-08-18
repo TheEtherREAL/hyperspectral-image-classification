@@ -1,6 +1,15 @@
 {
   "dataset": "salinas",
-  "protocol": "fair24_6_70",
+  "protocol": {
+    "name": "fair24_6_70",
+    "purpose": "24% train / 6% validation / 70% test fair model comparison",
+    "seed": 1442,
+    "target_fractions": {
+      "train": 0.24,
+      "validation": 0.06,
+      "test": 0.7
+    }
+  },
   "seed": 1442,
   "class_names": [
     "Broccoli_green_weeds_1",
@@ -22,5 +31,7 @@
   ],
   "train": 12990,
   "validation": 3248,
-  "test": 37891
+  "test": 37891,
+  "schema_version": "1.0",
+  "dataset_name": "salinas"
 }
