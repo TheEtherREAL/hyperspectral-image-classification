@@ -457,7 +457,10 @@ def main() -> int:
         torch.cuda.reset_peak_memory_stats(device)
     training_wall_started = time.perf_counter()
     for epoch in range(1, epochs + 1):
-        stats = train_one_epoch(model, loaders["train"], criterion, optimizer, device, non_blocking=pin_memory)
+        stats = train_one_epoch(
+            model, loaders["train"], criterion, optimizer, device,
+            non_blocking=pin_memory, epoch=epoch, total_epochs=epochs,
+        )
         record: dict[str, Any] = {
             "epoch": epoch,
             "train_loss": float(stats["loss"]),

@@ -14,6 +14,7 @@ import numpy as np
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
+from tqdm import tqdm
 
 from src.datasets.高光谱预处理 import HSITensorDataset, PreprocessingConfig
 
@@ -268,6 +269,8 @@ def train_one_epoch(
     device: torch.device,
     *,
     non_blocking: bool,
+    epoch: int | None = None,
+    total_epochs: int | None = None,
 ) -> dict[str, float | int]:
     model.train()
     loss_sum = 0.0
@@ -275,7 +278,9 @@ def train_one_epoch(
     sample_count = 0
     _synchronize(device)
     started = time.perf_counter()
-    for batch in loader:
+    desc = "训练" if epoch is None else f"训练 epoch {epoch}/{total_epochs or '?'}"
+    progress = tqdm(loader, desc=desc, unit="batch", leave=False, dynamic_ncols=True)
+    for batch in progress:
         inputs = batch["input"].to(device, non_blocking=non_blocking)
         labels = batch["label"].to(device, non_blocking=non_blocking)
         optimizer.zero_grad(set_to_none=True)
@@ -287,6 +292,8 @@ def train_one_epoch(
         loss_sum += float(loss.detach()) * count
         correct += int((logits.argmax(dim=1) == labels).sum())
         sample_count += count
+        progress.set_postfix(loss=f"{float(loss.detach()):.4f}", acc=f"{correct / sample_count:.3f}")
+    progress.close()
     _synchronize(device)
     elapsed = time.perf_counter() - started
     return {
