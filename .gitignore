@@ -84,24 +84,33 @@ runs/
 wandb/
 mlruns/
 
-# Result directories may grow quickly. Keep only the small audited dataset
-# overviews and class-count table in the public repository by default.
+# Result directories may grow quickly. Only the audited dataset overviews,
+# report figures, paper-reproduction charts and the class-count table are public.
 results/**
 !results/dataset_overviews/
 !results/dataset_overviews/*.png
 !results/tables/
 !results/tables/dataset_class_counts.csv
+!results/figures/
+!results/figures/*.png
+!results/论文复现结果/
+!results/论文复现结果/*.png
+!results/论文复现结果/*.csv
+!results/论文复现结果/*.md
+!results/论文复现结果/各模型图/
+!results/论文复现结果/各模型图/*.png
+!results/数据集分布/
+!results/数据集分布/README.md
+!results/数据集分布/figures/
+!results/数据集分布/figures/*.png
+!results/数据集分布/生成三大数据集分布插图.py
 
-# Keep completed-stage material locally without crowding the public project.
-# The seven compact YAML presets remain public because tests use them to prove
-# that the unified configuration preserves every historical route.
-归档/阶段0到2历史工具/
-归档/阶段0到2历史文档/
-归档/__init__.py
+# Historical stage materials stay local; the public repo only keeps the
+# unified configuration under configs/ and the small frozen preprocessing states.
+归档/
 
-# Local Codex hand-off notes contain machine-specific paths and are not needed
-# by GitHub collaborators; TASK_BOARD and CONTRIBUTING are the public hand-off.
-docs/NEW_WINDOW_START.md
+# Internal development docs are local-only.
+docs/
 
 # 运行产物（任何 outputs 目录、Joblib 序列化模型）体积大，仅保留在本地，不入库。
 outputs/
@@ -113,3 +122,17 @@ coursework/report/*.pdf
 coursework/report/rendered_*/
 coursework/report/template_audit/
 coursework/jupyter_runtime/
+
+# 实验报告、内部索引与一次性课程脚本仅保留在本地，不进入公开仓库。
+report/
+使用说明.md
+论文复现_内容索引.md
+scripts/build_coursework_notebooks.py
+scripts/build_coursework_report.py
+scripts/execute_coursework_notebooks.py
+scripts/修复固定划分格式.py
+scripts/生成课程报告图表.py
+scripts/运行课程HybridSN.py
+scripts/运行课程传统分类.py
+scripts/运行课程数据预处理.py
+scripts/运行课程预处理SVM对比.py
